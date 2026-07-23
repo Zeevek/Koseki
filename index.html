@@ -1121,14 +1121,30 @@ function vueDonnees(){
   <div class="grille c2">
     <div class="carte">
       <h2>Importer</h2>
-      <p style="font-size:13.5px;margin-bottom:10px">Fichier GEDCOM (.ged) exporté depuis MyHeritage, Geneanet, Ancestry ou tout autre logiciel. L'import remplace le contenu du projet courant. Les balises non gérées par l'application sont conservées et restituées à l'export.</p>
-      <input type="file" id="fichierGed" accept=".ged,.gedcom,.txt" style="margin-bottom:10px;font-size:13px">
+      <p style="font-size:13.5px;margin-bottom:10px">Fichier GEDCOM exporté depuis MyHeritage, Geneanet, Ancestry ou tout autre logiciel. L'import remplace le contenu du projet courant. Les balises non gérées sont conservées et restituées à l'export.</p>
+      <div id="zoneDepot" style="border:2px dashed var(--ligne-forte);border-radius:9px;padding:14px;text-align:center;background:#FCFBF7;margin-bottom:10px">
+        <input type="file" id="fichierGed" style="font-size:13px;max-width:100%">
+        <div class="aide" style="margin-top:6px">…ou glissez le fichier ici</div>
+        <div id="nomFichierGed" class="mono" style="font-size:12px;color:var(--greffe);margin-top:6px"></div>
+      </div>
       <div class="rang">
         <button class="btn rouge" id="btnImportGed">Importer dans « <span id="nomProjImport"></span> »</button>
       </div>
+      <details style="margin-top:12px">
+        <summary style="cursor:pointer;font-size:13px;color:var(--encre-doux)">Le fichier est grisé ou impossible à choisir&nbsp;?</summary>
+        <p class="aide" style="margin:8px 0">Sur iPhone et iPad, l'application Fichiers grise parfois les extensions inconnues comme <span class="mono">.ged</span>. Deux solutions&nbsp;:</p>
+        <p style="font-size:13px;margin-bottom:4px"><b>Coller le contenu</b> — ouvrez le .ged dans un éditeur de texte, copiez tout, collez ici&nbsp;:</p>
+        <textarea id="collerGed" placeholder="0 HEAD&#10;1 SOUR …" style="width:100%;min-height:80px;border:1px solid var(--ligne-forte);border-radius:6px;padding:7px;font-family:var(--f-data);font-size:12px"></textarea>
+        <button class="btn petit clair" id="btnCollerGed" style="margin-top:6px">Importer le texte collé</button>
+        <p style="font-size:13px;margin:12px 0 4px"><b>Charger depuis une adresse</b> — par exemple le .ged déposé dans votre dépôt GitHub&nbsp;:</p>
+        <input id="urlGed" placeholder="cagnat_normalise.ged ou https://…/mon-arbre.ged" style="width:100%;border:1px solid var(--ligne-forte);border-radius:6px;padding:7px;font-size:13px">
+        <button class="btn petit clair" id="btnUrlGed" style="margin-top:6px">Charger depuis l'adresse</button>
+        <p class="aide" style="margin-top:4px">Si le fichier est déposé dans le même dépôt que l'application, son nom seul suffit.</p>
+        <p class="aide" style="margin-top:6px">Autre astuce iOS&nbsp;: renommez le fichier en <span class="mono">.txt</span> dans l'app Fichiers, il devient sélectionnable.</p>
+      </details>
       <hr style="border:none;border-top:1px solid var(--ligne);margin:14px 0">
       <p style="font-size:13.5px;margin-bottom:8px">Restaurer une sauvegarde complète (.json) :</p>
-      <input type="file" id="fichierJson" accept=".json" style="font-size:13px">
+      <input type="file" id="fichierJson" style="font-size:13px">
       <button class="btn petit clair" id="btnImportJson" style="margin-top:8px">Restaurer la sauvegarde</button>
     </div>
     <div class="carte">
@@ -1153,18 +1169,44 @@ function vueDonnees(){
   </div>`;
   $("#nomProjImport").textContent = E.projet?.nom || "";
 
+  const zone = $("#zoneDepot");
+  $("#fichierGed").addEventListener("change", e => {
+    const f = e.target.files[0];
+    $("#nomFichierGed").textContent = f ? `${f.name} · ${(f.size/1024).toFixed(0)} Ko` : "";
+  });
+  ["dragenter","dragover"].forEach(ev => zone.addEventListener(ev, e => {
+    e.preventDefault(); zone.style.borderColor = "var(--greffe)"; zone.style.background = "var(--greffe-pale)";
+  }));
+  ["dragleave","drop"].forEach(ev => zone.addEventListener(ev, e => {
+    e.preventDefault(); zone.style.borderColor = "var(--ligne-forte)"; zone.style.background = "#FCFBF7";
+  }));
+  zone.addEventListener("drop", async e => {
+    const f = e.dataTransfer.files[0];
+    if(f){ $("#nomFichierGed").textContent = `${f.name} · ${(f.size/1024).toFixed(0)} Ko`; importerGed(await lireFichierTexte(f), f.name); }
+  });
   $("#btnImportGed").addEventListener("click", async () => {
     const f = $("#fichierGed").files[0];
-    if(!f){ toast("Choisissez d'abord un fichier .ged"); return; }
-    const texte = await f.text();
-    const enregs = parseGedcom(texte);
-    const nb = enregs.filter(r => r.tag === "INDI").length;
-    if(!nb){ toast("Aucun individu trouvé dans ce fichier."); return; }
-    M.enregs = enregs; M.reconstruire();
-    E.ficheId = null; E.racineArbre = null; E.racineDesc = null;
-    marquerModifie();
-    toast(`${nb.toLocaleString("fr-FR")} personnes importées`);
-    afficherVue("tableau");
+    if(!f){ toast("Choisissez d'abord un fichier"); return; }
+    importerGed(await lireFichierTexte(f), f.name);
+  });
+  $("#btnCollerGed").addEventListener("click", () => {
+    const txt = $("#collerGed").value;
+    if(txt.trim().length < 20){ toast("Collez d'abord le contenu du fichier"); return; }
+    importerGed(txt, "texte collé");
+  });
+  $("#btnUrlGed").addEventListener("click", async () => {
+    const u = $("#urlGed").value.trim();
+    if(!u){ toast("Indiquez une adresse"); return; }
+    toast("Téléchargement…");
+    try {
+      const r = await fetch(u);
+      if(!r.ok) throw new Error("HTTP " + r.status);
+      importerGed(decoderGed(await r.arrayBuffer()), u.split("/").pop());
+    } catch(err) {
+      toast(location.protocol === "file:"
+        ? "Chargement par adresse impossible en ouvrant le fichier localement — utilisez le sélecteur ou le collage."
+        : "Échec du téléchargement : " + err.message + " (le site distant doit autoriser l'accès)");
+    }
   });
   $("#btnExportGed").addEventListener("click", () => {
     const blob = new Blob([serialiserGedcom(M.enregs)], { type:"text/plain;charset=utf-8" });
@@ -1208,6 +1250,33 @@ function vueDonnees(){
     };
     $("#dlgConfirm").showModal();
   });
+}
+/* Lecture et décodage tolérant des fichiers GEDCOM (UTF-8, sinon Windows-1252) */
+function decoderGed(buf){
+  let txt = new TextDecoder("utf-8").decode(buf);
+  const abimes = (txt.match(/\uFFFD/g) || []).length;
+  if(abimes > txt.length / 2000){                      // trop de caractères illisibles : autre encodage
+    try { txt = new TextDecoder("windows-1252").decode(buf); } catch(e){}
+  }
+  return txt;
+}
+async function lireFichierTexte(f){ return decoderGed(await f.arrayBuffer()); }
+function importerGed(texte, nom){
+  const enregs = parseGedcom(texte);
+  const nb = enregs.filter(r => r.tag === "INDI").length;
+  if(!nb){
+    toast(/0\s+HEAD/.test(texte) ? "Fichier GEDCOM sans individu." : "Ce fichier ne ressemble pas à un GEDCOM.");
+    return;
+  }
+  M.enregs = enregs; M.reconstruire();
+  E.ficheId = null; E.racineArbre = null; E.racineDesc = null;
+  if(E.projet && nom && /^(Mon arbre|Nouvel arbre)$/.test(E.projet.nom)){
+    E.projet.nom = nom.replace(/\.(ged|gedcom|txt)$/i, "") || E.projet.nom;
+    majSelecteurProjets();
+  }
+  marquerModifie();
+  toast(`${nb.toLocaleString("fr-FR")} personnes importées`);
+  afficherVue("tableau");
 }
 function nomFichier(s){ return norm(s).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "registre"; }
 function telecharger(blob, nom){
