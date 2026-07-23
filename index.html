@@ -148,10 +148,10 @@ table.reg tr.clic:hover{background:#F1EDE3}
 @media (max-width:640px){ #svgArbre{height:min(62vh,520px)} }
 #svgArbre text{font-family:var(--f-body)}
 #svgArbre .boitePers{cursor:pointer}
-#svgArbre .boitePers rect{fill:#FCFBF7;stroke:var(--ligne-forte);stroke-width:1;rx:5;vector-effect:non-scaling-stroke}
+#svgArbre .boitePers rect{fill:#FCFBF7;stroke:var(--ligne-forte);rx:5}
 #svgArbre .boitePers:hover rect{stroke:var(--greffe);stroke-width:1.5}
 #svgArbre .boitePers.centre rect{fill:var(--greffe-pale);stroke:var(--greffe)}
-#svgArbre .trait{stroke:var(--ligne-forte);stroke-width:1.2;fill:none;vector-effect:non-scaling-stroke}
+#svgArbre .trait{stroke:var(--ligne-forte);fill:none}
 #svgArbre .nomB{font-size:12px;font-weight:600;fill:var(--encre)}
 #svgArbre .patB{font-size:11px;fill:var(--greffe);letter-spacing:.5px}
 #svgArbre .datB{font-size:10.5px;fill:var(--encre-doux);font-family:var(--f-data)}
@@ -1119,18 +1119,26 @@ function dessinerArbre(){
   const zone = $("#zoneArbre");
   const premier = !ARBRE.vb || ARBRE.pourRacine !== E.racineArbre + "|" + G;
   if(premier){ ARBRE.vb = [0, 0, W, H]; ARBRE.pourRacine = E.racineArbre + "|" + G; }
-  zone.innerHTML = `<svg id="svgArbre" viewBox="${ARBRE.vb.join(" ")}" preserveAspectRatio="xMidYMid meet">${traits}${boites}</svg>
+  zone.innerHTML = `<svg id="svgArbre" viewBox="${ARBRE.vb.join(" ")}" preserveAspectRatio="xMidYMid meet"><g id="arbTraits">${traits}</g><g id="arbBoites">${boites}</g></svg>
     <div class="zoomBtns pasImpr">
       <button id="arbPlus" aria-label="Zoomer">+</button>
       <button id="arbMoins" aria-label="Dézoomer">−</button>
       <button id="arbAjuste" class="min" aria-label="Tout afficher">⤢</button>
     </div>`;
   const svg = $("#svgArbre");
-  const g = activerGestes(svg, ARBRE, { min: 60, max: W * 6 });
+  const majEchArbre = () => {                 // épaisseurs constantes à l'écran, sans vector-effect
+    const r = svg.getBoundingClientRect(); if(!r.width) return;
+    const parPx = ARBRE.vb[2] / r.width;      // unités du dessin par pixel écran
+    const a1=$("#arbTraits"), a2=$("#arbBoites");
+    if(a1) a1.setAttribute("stroke-width", (1.3*parPx).toFixed(4));
+    if(a2) a2.setAttribute("stroke-width", (1.1*parPx).toFixed(4));
+  };
+  const g = activerGestes(svg, ARBRE, { min: 60, max: W * 6, pendant: majEchArbre });
+  majEchArbre();
   $("#arbPlus").addEventListener("click", () => g.zoomVers(0.5, 0.5, 1/1.5));
   $("#arbMoins").addEventListener("click", () => g.zoomVers(0.5, 0.5, 1.5));
   $("#arbAjuste").addEventListener("click", () => { ARBRE.vb = [0, 0, W, H];
-    svg.setAttribute("viewBox", ARBRE.vb.join(" ")); });
+    svg.setAttribute("viewBox", ARBRE.vb.join(" ")); majEchArbre(); });
   $$("#svgArbre [data-arbre]").forEach(el => {
     el.addEventListener("click", () => {
       if(g.aBouge()) return;                       // c'était un déplacement, pas un appui
@@ -37595,7 +37603,7 @@ function construireCarte(el){
 
   el.innerHTML=`
   <h1 class="titreVue">Carte des migrations</h1>
-  <p class="sousTitre">${loc.length} lieux localisés sur ${lieux.length} · ${CARTE.mv.length.toLocaleString("fr-FR")} mouvements retracés · molette pour zoomer, glisser pour déplacer</p>
+  <p class="sousTitre">${loc.length} lieux localisés sur ${lieux.length} · ${CARTE.mv.length.toLocaleString("fr-FR")} mouvements retracés · pincez ou molette pour zoomer, glissez pour vous déplacer</p>
 
   <div class="carte pasImpr" style="padding:12px">
     <div class="rang" style="gap:14px">
@@ -37715,15 +37723,17 @@ function dessinerCarte(quoi){
   const detail = ech<0.14 ? "dep" : "monde";
   if(quoi==="tout" || CARTE.detail!==detail){
     CARTE.detail=detail;
-    const poly=(pl,fill,stroke,sw)=>{
+    const poly=(pl,fill)=>{
       let d="";
       for(const ring of pl) d+="M"+ring.map(([lo,la])=>projeter(la,lo).map(v=>v.toFixed(1)).join(",")).join("L")+"Z";
-      return `<path d="${d}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>`;
+      return `<path d="${d}" fill="${fill}"/>`;
     };
-    let fond="";
-    for(const f of MONDE) fond+=poly(f.p,"#E3DCCB","#C9BFA6",1);
-    if(detail==="dep") for(const f of DEPS) fond+=poly(f.p,"none","#CFC4AA",0.7);
-    gF.innerHTML=fond;
+    let pays="", deps="";
+    for(const f of MONDE) pays+=poly(f.p,"#E3DCCB");
+    if(detail==="dep") for(const f of DEPS) deps+=poly(f.p,"none");
+    // l'épaisseur est portée par le groupe : une seule valeur à ajuster au zoom
+    gF.innerHTML=`<g id="cPays" stroke="#C9BFA6" stroke-linejoin="round">${pays}</g>`+
+                 (deps?`<g id="cDeps" stroke="#CFC4AA" stroke-linejoin="round" fill="none">${deps}</g>`:"");
   }
 
   // --- arcs : dépendent du temps et des filtres ---
@@ -37741,18 +37751,22 @@ function dessinerCarte(quoi){
       const k=m.type+"|"+m.de+"|"+m.vers;
       const a=agg.get(k); if(a){ a.n++; a.an=Math.max(a.an,m.an); } else agg.set(k,{...m,n:1});
     }
-    let arcs="";
+    const groupes=new Map();          // couleur|épaisseur|opacité -> tracés réunis
     for(const m of agg.values()){
       const [x1,y1]=projeter(m.a.lat,m.a.lon), [x2,y2]=projeter(m.b.lat,m.b.lon);
       const dx=x2-x1, dy=y2-y1;
       const cx=(x1+x2)/2 - dy*0.16, cy=(y1+y2)/2 + dx*0.16;
       const recent = CARTE.jouer && (CARTE.an-m.an)<=18;
       const col = recent ? "#D4A017" : (m.type==="filiation" ? "#9E2B33" : "#33506E");
-      const op  = recent ? 0.98 : Math.min(0.85, 0.34+m.n*0.07);
-      const w   = (recent ? 2.6 : 1) * Math.min(3.6, 1.05+m.n*0.26);
-      arcs+=`<path d="M${x1.toFixed(1)},${y1.toFixed(1)}Q${cx.toFixed(1)},${cy.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}"
-        fill="none" stroke="${col}" stroke-width="${w.toFixed(2)}" opacity="${op}" stroke-linecap="round" vector-effect="non-scaling-stroke"/>`;
+      const op  = recent ? 1 : Math.round(Math.min(0.85, 0.34+m.n*0.07)*10)/10;
+      const w   = Math.round((recent ? 2.6 : 1) * Math.min(3.6, 1.05+m.n*0.26) * 4)/4;
+      const cle = col+"|"+w+"|"+op;
+      const d   = `M${x1.toFixed(1)},${y1.toFixed(1)}Q${cx.toFixed(1)},${cy.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}`;
+      const g=groupes.get(cle); if(g) g.d+=d; else groupes.set(cle,{col,w,op,d});
     }
+    let arcs="";
+    for(const g of groupes.values())
+      arcs+=`<path d="${g.d}" fill="none" stroke="${g.col}" data-w="${g.w}" opacity="${g.op}" stroke-linecap="round"/>`;
     gA.innerHTML=arcs;
     CARTE.nbArcs=agg.size; CARTE.nbMv=mv.length;
   }
@@ -37778,13 +37792,15 @@ function dessinerCarte(quoi){
     // taille écran constante, position ancrée sur la carte, aucun recalcul au zoom.
     // Les points de diamètre voisin sont réunis dans un seul chemin : quelques dizaines
     // d'éléments au lieu d'un millier, ce qui garde l'animation fluide.
+    const largeurSvg=$("#svgCarte")?.getBoundingClientRect().width || 800;
+    const fPt=Math.min(1, Math.max(0.72, largeurSvg/620));   // points plus discrets sur petit écran
     const paquets=new Map();          // diamètre arrondi -> {pleins:[], halos:[]}
     CARTE.etiq=[]; let selD=null;
     for(const [plac,n] of cpt){
       const L=coordDe(plac); if(!L) continue;
       const [x,y]=projeter(L.lat,L.lon);
       const seg="M"+x.toFixed(2)+","+y.toFixed(2)+"L"+x.toFixed(2)+","+y.toFixed(2);
-      const D=Math.round((5.5+Math.sqrt(n/maxN)*13)*2)/2;      // diamètre écran, par pas de 0,5 px
+      const D=Math.round((4.5+Math.sqrt(n/maxN)*9.5)*fPt*2)/2; // diamètre écran, par pas de 0,5 px
       CARTE.etiq.push({plac, x, y, n, D});
       if(CARTE.sel===plac){ selD={seg, D}; continue; }
       let q=paquets.get(D); if(!q){ q={pleins:[], halos:[]}; paquets.set(D,q); }
@@ -37792,16 +37808,31 @@ function dessinerCarte(quoi){
       if(L.prec!=="commune" && L.prec!=="manuel") q.halos.push(seg);
     }
     let pts="";
-    const chemin=(d,col,w,op)=>`<path d="${d}" stroke="${col}" stroke-width="${w}" ${op?`stroke-opacity="${op}" `:""}stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke"/>`;
-    for(const [D,q] of paquets) if(q.halos.length) pts+=chemin(q.halos.join(""), "#7E2B24", (D*2.1).toFixed(1), 0.20);
+    const chemin=(d,col,w,op)=>`<path d="${d}" stroke="${col}" data-w="${w}" ${op?`stroke-opacity="${op}" `:""}stroke-linecap="round" fill="none"/>`;
+    for(const [D,q] of paquets) if(q.halos.length) pts+=chemin(q.halos.join(""), "#7E2B24", (D*1.85).toFixed(1), 0.18);
     for(const [D,q] of paquets) pts+=chemin(q.pleins.join(""), "#7E2B24", (D+2.6).toFixed(1));
     for(const [D,q] of paquets) pts+=chemin(q.pleins.join(""), "#F6F0E3", D.toFixed(1));
     if(selD) pts+=chemin(selD.seg,"#7E2B24",(selD.D+3.4).toFixed(1))+chemin(selD.seg,"#D4A017",(selD.D+1).toFixed(1));
     gP.innerHTML=pts;
   }
-  majEtiquettes();
+  majEchelle(); majEtiquettes();
   majInfo(CARTE.nbArcs||0, CARTE.nbMv||0);
 }
+/* Les épaisseurs de trait sont recalculées à la main plutôt que confiées à
+   vector-effect="non-scaling-stroke", que certains navigateurs (Safari) n'appliquent pas :
+   chaque tracé porte l'épaisseur voulue en pixels écran dans data-w, convertie ici
+   en unités carte. Peu d'éléments à parcourir grâce au regroupement par style. */
+function majEchelle(){
+  const svg=$("#svgCarte"); if(!svg || !CARTE.vb) return;
+  const r=svg.getBoundingClientRect(); if(!r.width) return;
+  const parPx=CARTE.vb[2]/r.width;              // unités carte correspondant à un pixel écran
+  const pays=$("#cPays"), deps=$("#cDeps");
+  if(pays) pays.setAttribute("stroke-width",(1*parPx).toFixed(4));
+  if(deps) deps.setAttribute("stroke-width",(0.8*parPx).toFixed(4));
+  for(const el of svg.querySelectorAll("[data-w]"))
+    el.setAttribute("stroke-width",(parseFloat(el.dataset.w)*parPx).toFixed(4));
+}
+
 /* Étiquettes des villes : surcouche HTML, repositionnée à chaque changement de vue.
    Taille de texte constante, jamais de saut, et anti-chevauchement. */
 function majEtiquettes(){
@@ -37813,7 +37844,8 @@ function majEtiquettes(){
   const kx=r.width/vw, ky=r.height/vh;
   // plus on zoome, plus on peut nommer de lieux sans surcharger
   const ech=vw/PROJ.W;
-  const maxEtiq = ech>0.5 ? 0 : ech>0.18 ? 10 : ech>0.06 ? 22 : ech>0.02 ? 40 : 70;
+  const fEcr = Math.min(1, r.width/620);                    // moins d'étiquettes sur petit écran
+  const maxEtiq = Math.round((ech>0.5 ? 0 : ech>0.18 ? 10 : ech>0.06 ? 22 : ech>0.02 ? 40 : 70) * fEcr);
   if(!maxEtiq){ cap.innerHTML=""; return; }
 
   const cands=CARTE.etiq
@@ -37828,7 +37860,10 @@ function majEtiquettes(){
     const nom=e.plac.split(",")[0].replace(/^\d{4,5}\s*/,"").trim();
     if(!nom) continue;
     const larg=nom.length*6.1+8, haut=15;
-    const x=e.sx+9, y=e.sy-7;
+    let x=e.sx+9, y=e.sy-7;
+    if(x+larg > r.width-4) x=e.sx-9-larg;                   // bascule à gauche plutôt que déborder
+    if(x < 2) x = 2;
+    y = Math.min(Math.max(y, 2), r.height-haut-2);
     const boite={x1:x, y1:y, x2:x+larg, y2:y+haut};
     if(pris.some(b=>chevauche(boite,b))) continue;
     pris.push({x1:e.sx-7, y1:e.sy-7, x2:e.sx+7, y2:e.sy+7}, boite);
@@ -37928,7 +37963,7 @@ function majStats(){
 function brancherInteractions(svg){
   CARTE.gestes = activerGestes(svg, CARTE, {
     min: 0.35, max: PROJ.W*1.4,
-    pendant: majEtiquettes,          // suit le doigt sans latence
+    pendant: () => { majEchelle(); majEtiquettes(); },   // suit le doigt sans latence
     apres: () => dessinerCarte("zoom")
   });
 }
