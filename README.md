@@ -10,11 +10,18 @@ tout reste sur votre appareil.
 
 ## Démarrage
 
-Ouvrez simplement `koseki.html` dans un navigateur, ou déployez-le sur GitHub Pages :
+Ouvrez simplement `index.html` dans un navigateur, ou déployez-le sur GitHub Pages :
 
-1. Créez un dépôt `koseki` et ajoutez `koseki.html` (renommez-le `index.html` pour avoir l'URL courte)
-2. Settings → Pages → Deploy from branch → `main`
-3. L'application est en ligne ; les données restent locales (IndexedDB), rien n'est envoyé au serveur
+1. Créez un dépôt `koseki` et poussez-y les fichiers. **Le fichier de l'application doit s'appeler
+   `index.html`** : sans lui, GitHub Pages affiche le README à la place du site.
+2. Settings → Pages → Source : *Deploy from a branch* → branche `main`, dossier `/ (root)`
+3. Après une minute, l'application est en ligne à l'adresse `https://<utilisateur>.github.io/koseki/`
+
+> Deux adresses à ne pas confondre :
+> `github.com/<utilisateur>/koseki` est la page **du code** — elle affiche toujours le README, c'est normal.
+> `<utilisateur>.github.io/koseki/` est l'**application** elle-même.
+
+Les données restent locales (IndexedDB), rien n'est envoyé au serveur.
 
 ## Fonctionnalités
 
@@ -44,8 +51,19 @@ embarqués dans le fichier.
   - *filiations* — du lieu de naissance des parents à celui de leurs enfants (la dérive géographique
     d'une lignée au fil des générations)
   - *vies* — du lieu de naissance au lieu de décès d'une même personne
-- **Curseur temporel et animation** : faire défiler les siècles et regarder la famille se déplacer
-- **Points proportionnels** au nombre d'événements par lieu ; clic pour lister les personnes concernées
+- **Curseur temporel et animation** : faire défiler les siècles et regarder la famille se déplacer,
+  avec deux lectures possibles :
+  - *cumulé* — tous les déplacements survenus jusqu'à la date affichée s'accumulent
+  - *seulement les vivants à cette date* — les déplacements disparaissent à la mort des personnes
+    concernées : on ne voit que les contemporains de l'année affichée, et les générations se
+    renouvellent au fil de l'animation (à défaut de date de décès connue, une vie est estimée à 85 ans)
+- **Légende illustrée** sous la carte, expliquant chaque couleur, l'épaisseur des traits, la taille
+  des cercles et les positions approchées
+- **Points ancrés** : chaque commune est un point de taille constante à l'écran, fixé à ses coordonnées.
+  Il ne bouge ni ne change de taille quand on zoome — la taille traduit le nombre d'événements du lieu.
+  Un appui liste les personnes concernées.
+- **Étiquettes des communes** en surcouche, sans chevauchement : elles suivent le déplacement sans décalage
+  et se densifient à mesure qu'on zoome
 - **Zoom et déplacement** à la molette et au glisser ; vues France / Monde préréglées
 - **Statistiques** : distance moyenne, plus grand déplacement, répartition par siècle
 
@@ -59,6 +77,50 @@ Les positions approchées sont signalées par un cercle en pointillés. Le panne
 permet de corriger n'importe quelle position à la main (latitude / longitude) ; la correction est
 mémorisée dans le projet — utile notamment pour les lieux étrangers, que le référentiel ne couvre
 qu'au niveau du pays.
+
+## Importer son arbre
+
+Quatre voies, au choix — utile car iOS grise parfois les fichiers `.ged` dans l'app Fichiers :
+
+1. **Sélecteur de fichier** (aucune extension n'est filtrée)
+2. **Glisser-déposer** sur la zone d'import (ordinateur)
+3. **Copier-coller** du contenu du fichier, dans le panneau *Le fichier est grisé ?*
+4. **Chargement depuis une adresse** — si le `.ged` est déposé dans le même dépôt que l'application,
+   son nom seul suffit (ex. `cagnat_normalise.ged`)
+
+Astuce iOS supplémentaire : renommer le fichier en `.txt` dans l'app Fichiers le rend sélectionnable.
+
+Les fichiers encodés en Windows-1252 (ANSI) sont détectés et convertis automatiquement.
+
+## Installer sur l'écran d'accueil
+
+L'application est installable comme une application native, avec son icône :
+
+- **iOS / iPadOS** — ouvrir le site dans Safari, bouton Partager → *Sur l'écran d'accueil*
+- **Android** — Chrome, menu → *Installer l'application* (ou *Ajouter à l'écran d'accueil*)
+
+Elle s'ouvre alors en plein écran, sans barre de navigateur. `manifest.webmanifest` et
+`koseki-app-icon.png` doivent être présents à la racine du dépôt, à côté de `index.html`.
+
+## Sur téléphone et tablette
+
+L'application est utilisable au doigt sur Android et iOS :
+
+- **Arbre et carte** — pincer pour zoomer, glisser pour se déplacer, double-appui pour zoomer d'un cran ;
+  des boutons `+` / `−` sont également disponibles. Un appui simple sur une case recentre l'arbre,
+  un double-appui ouvre la fiche.
+- **Pas de zoom involontaire de la page** : le zoom du navigateur est neutralisé (y compris sur Safari iOS,
+  qui ignore `user-scalable=no`), et les champs de saisie font 16 px pour éviter le zoom automatique d'iOS
+  à la mise au point.
+- Tableaux et en-tête s'adaptent aux écrans étroits, sans défilement horizontal.
+
+## Note technique
+
+Les épaisseurs de trait et les tailles de points sont recalculées en JavaScript à chaque
+changement de vue plutôt que confiées à `vector-effect="non-scaling-stroke"` : cette propriété
+n'est pas appliquée de la même façon par tous les navigateurs, ce qui donnait des points
+démesurés sur Safari iOS. Le regroupement des tracés par style (une trentaine d'éléments SVG
+pour plusieurs centaines de lieux) rend ce recalcul quasi gratuit.
 
 ## Confidentialité
 

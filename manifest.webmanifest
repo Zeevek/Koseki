@@ -1,0 +1,16 @@
+{
+  "name": "Koseki — registre généalogique",
+  "short_name": "Koseki",
+  "description": "Généalogie hors-ligne : GEDCOM, arbre, carte des migrations.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#F7F5EF",
+  "theme_color": "#22303F",
+  "lang": "fr",
+  "icons": [
+    { "src": "koseki-app-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "koseki-app-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
