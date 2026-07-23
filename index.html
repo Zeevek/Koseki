@@ -37512,11 +37512,19 @@ function calculerMouvements(){
   const mv=[];
   const lieuNais = p => p.evts.find(e=>e.tag==="BIRT" && e.lieu)?.lieu || p.evts.find(e=>e.tag==="CHR" && e.lieu)?.lieu;
   const lieuDec  = p => p.evts.find(e=>(e.tag==="DEAT"||e.tag==="BURI") && e.lieu)?.lieu;
+  // fenêtre de vie : sert au mode « vivants à cette date ».
+  // Sans date de décès connue, on suppose une vie de 85 ans au plus.
+  const vie = p => {
+    const n = p.anNais ?? (p.anDec ? p.anDec - 60 : null);
+    const f = p.anDec ?? (n != null ? n + 85 : null);
+    return [n, f];
+  };
   for(const p of M.indis.values()){
     const ln=lieuNais(p), ld=lieuDec(p);
+    const [vn, vf] = vie(p);
     if(ln && ld && ln!==ld){
       const a=coordDe(ln), b=coordDe(ld);
-      if(a&&b) mv.push({type:"vie", de:ln, vers:ld, a, b, an:p.anNais||p.anDec, qui:p.id});
+      if(a&&b) mv.push({type:"vie", de:ln, vers:ld, a, b, an:p.anNais||p.anDec, qui:p.id, vn, vf});
     }
     if(ln){
       for(const par of deuxParents(p.id)){
@@ -37524,7 +37532,7 @@ function calculerMouvements(){
         const pp=M.indis.get(par); if(!pp) continue;
         const lp=lieuNais(pp); if(!lp || lp===ln) continue;
         const a=coordDe(lp), b=coordDe(ln);
-        if(a&&b) mv.push({type:"filiation", de:lp, vers:ln, a, b, an:p.anNais||pp.anNais, qui:p.id});
+        if(a&&b) mv.push({type:"filiation", de:lp, vers:ln, a, b, an:p.anNais||pp.anNais, qui:p.id, vn, vf});
       }
     }
   }
@@ -37548,7 +37556,8 @@ function projeter(lat,lon){
 
 /* État de la vue carte */
 const CARTE={ vb:null, mv:[], pts:[], anMin:1500, anMax:2030, an:2030, jouer:false, timer:null,
-              filtre:{vie:true, filiation:true}, sel:null, prec:{commune:true,departement:true,region:true,pays:true} };
+              filtre:{vie:true, filiation:true}, mode:"cumul", sel:null,
+              prec:{commune:true,departement:true,region:true,pays:true} };
 
 /* ---------- Vue Carte ---------- */
 function vueCarte(){
@@ -37558,7 +37567,7 @@ function vueCarte(){
     return;
   }
   el.innerHTML=`<h1 class="titreVue">Carte des migrations</h1>
-    <p class="sousTitre">Chaque trait relie deux lieux d'une même lignée. Molette pour zoomer, glisser pour déplacer.</p>
+    <p class="sousTitre">Chaque trait relie deux lieux d'une même lignée. Pincez ou molette pour zoomer, glissez pour vous déplacer.</p>
     <div class="carte vide" id="carteChargement"><div class="gros">Géocodage en cours…</div>Localisation des lieux du registre.</div>`;
   setTimeout(()=>{ construireCarte(el); }, 30);
 }
@@ -37568,6 +37577,12 @@ function construireCarte(el){
   CARTE.evts=[];                                  // liste à plat, pour un filtrage temporel rapide
   for(const p of M.indis.values())
     for(const e of p.evts) if(e.lieu) CARTE.evts.push({lieu:e.lieu, an:annee(e.date)});
+  CARTE.vies=[];                                  // fenêtres de vie, pour le compteur de contemporains
+  for(const p of M.indis.values()){
+    const n = p.anNais ?? (p.anDec ? p.anDec-60 : null);
+    if(n==null) continue;
+    CARTE.vies.push([n, p.anDec ?? n+85]);
+  }
   const lieux=[...LIEUX.table.values()];
   const loc=lieux.filter(l=>l.lat!=null);
   const ans=CARTE.mv.map(m=>m.an).filter(Boolean);
@@ -37592,15 +37607,25 @@ function construireCarte(el){
       <button class="btn petit clair" id="btnAjuster">Ajuster</button>
     </div>
     <div class="rang" style="margin-top:10px;gap:10px">
+      <span style="font-size:13px">Afficher&nbsp;:</span>
+      <select id="modeCarte" style="border:1px solid var(--ligne-forte);border-radius:6px;padding:5px">
+        <option value="cumul"${CARTE.mode==="cumul"?" selected":""}>tout depuis l'origine (cumulé)</option>
+        <option value="vivants"${CARTE.mode==="vivants"?" selected":""}>seulement les vivants à cette date</option>
+      </select>
+    </div>
+    <div class="rang" style="margin-top:10px;gap:10px">
       <button class="btn petit" id="btnJouer">▶ Animer</button>
-      <input type="range" id="curAn" min="${CARTE.anMin}" max="${CARTE.anMax}" value="${CARTE.an}" style="flex:1;min-width:140px">
-      <span class="mono" id="labAn" style="min-width:132px;text-align:right">jusqu'en ${CARTE.an}</span>
+      <input type="range" id="curAn" min="${CARTE.anMin}" max="${CARTE.anMax}" value="${CARTE.an}" style="flex:1;min-width:120px">
+      <span class="mono" id="labAn" style="min-width:96px;text-align:right;font-size:17px;color:var(--greffe);font-weight:600">${CARTE.an}</span>
     </div>
   </div>
 
   <div class="carte" style="padding:0;overflow:hidden;position:relative">
-    <svg id="svgCarte" style="width:100%;height:min(66vh,620px);display:block;background:#EFEAE0;touch-action:none;cursor:grab">
-      <g id="cFond"></g><g id="cArcs"></g><g id="cPts"></g></svg>
+    <div id="boiteCarte" style="position:relative">
+      <svg id="svgCarte" style="width:100%;height:min(66vh,620px);display:block;background:#EFEAE0;touch-action:none;cursor:grab">
+        <g id="cFond"></g><g id="cArcs"></g><g id="cPts"></g></svg>
+      <div id="capCarte" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>
+    </div>
     <div class="zoomBtns pasImpr">
       <button id="carPlus" aria-label="Zoomer">+</button>
       <button id="carMoins" aria-label="Dézoomer">−</button>
@@ -37608,6 +37633,7 @@ function construireCarte(el){
     <div id="infoCarte" style="position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.94);border:1px solid var(--ligne);border-radius:8px;padding:8px 11px;font-size:12px;max-width:60%;box-shadow:var(--ombre)"></div>
   </div>
 
+  <div class="carte"><h2>Comment lire cette carte</h2><div id="legendeCarte"></div></div>
   <div class="grille c2">
     <div class="carte"><h2>Repères</h2><div id="statsCarte"></div></div>
     <div class="carte"><h2>Précision du géocodage</h2>
@@ -37623,18 +37649,37 @@ function construireCarte(el){
   ajusterVue(loc);
   dessinerCarte();
   brancherInteractions(svg);
+  // Sélection par proximité : on cherche le lieu le plus proche du doigt,
+  // ce qui évite d'entretenir des centaines de zones cliquables.
+  svg.addEventListener("click", ev => {
+    if(CARTE.gestes && CARTE.gestes.aBouge()) return;
+    const r = svg.getBoundingClientRect(), [vx,vy,vw,vh] = CARTE.vb;
+    const mx = vx + (ev.clientX-r.left)/r.width*vw, my = vy + (ev.clientY-r.top)/r.height*vh;
+    const parPx = vw/r.width;                       // unités carte par pixel écran
+    let best=null, bd=Infinity;
+    for(const e of (CARTE.etiq||[])){
+      const d = Math.hypot(e.x-mx, e.y-my)/parPx;   // distance en pixels écran
+      if(d < bd && d < Math.max(e.D/2+13, 20)){ bd=d; best=e; }
+    }
+    if(best) selectionnerLieu(best.plac);
+    else if(CARTE.sel){ CARTE.sel=null; dessinerCarte("temps"); majInfo(CARTE.nbArcs||0, CARTE.nbMv||0); }
+  });
 
   $("#mFil").addEventListener("change",e=>{CARTE.filtre.filiation=e.target.checked;dessinerCarte("temps");});
   $("#mVie").addEventListener("change",e=>{CARTE.filtre.vie=e.target.checked;dessinerCarte("temps");});
-  $("#curAn").addEventListener("input",e=>{CARTE.an=+e.target.value;$("#labAn").textContent="jusqu'en "+CARTE.an;dessinerCarte("temps");});
+  $("#curAn").addEventListener("input",e=>{CARTE.an=+e.target.value;$("#labAn").textContent=CARTE.an;dessinerCarte("temps");});
   $("#btnJouer").addEventListener("click",basculerAnimation);
   $("#btnFrance").addEventListener("click",()=>{cadrer(41.3,-5.2,51.1,9.6);dessinerCarte();});
   $("#btnMonde").addEventListener("click",()=>{cadrer(-56,-170,72,179);dessinerCarte();});
   $("#btnAjuster").addEventListener("click",()=>{ajusterVue(loc);dessinerCarte();});
+  $("#modeCarte").addEventListener("change",e=>{
+    CARTE.mode=e.target.value;
+    dessinerCarte("temps"); majLegende();
+  });
   $("#carPlus").addEventListener("click",()=>{CARTE.gestes.zoomVers(0.5,0.5,1/1.6);dessinerCarte("zoom");});
   $("#carMoins").addEventListener("click",()=>{CARTE.gestes.zoomVers(0.5,0.5,1.6);dessinerCarte("zoom");});
   $("#btnLieux").addEventListener("click",()=>basculerPanneauLieux(lieux));
-  majStats();
+  majStats(); majLegende();
 }
 
 function cadrer(lat1,lon1,lat2,lon2){
@@ -37683,7 +37728,14 @@ function dessinerCarte(quoi){
 
   // --- arcs : dépendent du temps et des filtres ---
   if(quoi==="tout" || quoi==="temps"){
-    const mv=CARTE.mv.filter(m=>CARTE.filtre[m.type] && m.an && m.an<=CARTE.an);
+    const mv=CARTE.mv.filter(m=>{
+      if(!CARTE.filtre[m.type] || !m.an || m.an>CARTE.an) return false;
+      if(CARTE.mode==="vivants"){                       // ne garder que les personnes vivantes à cette date
+        if(m.vn==null || m.vf==null) return false;
+        return m.vn<=CARTE.an && CARTE.an<=m.vf;
+      }
+      return true;
+    });
     const agg=new Map();
     for(const m of mv){
       const k=m.type+"|"+m.de+"|"+m.vers;
@@ -37705,52 +37757,102 @@ function dessinerCarte(quoi){
     CARTE.nbArcs=agg.size; CARTE.nbMv=mv.length;
   }
 
-  // --- points et étiquettes : dépendent du temps et de l'échelle ---
-  if(quoi==="tout" || quoi==="temps" || quoi==="zoom"){
+  // --- points : ne dépendent plus que du temps (leur taille écran est fixe) ---
+  if(quoi==="tout" || quoi==="temps"){
     const cpt=new Map();
-    for(const ev of CARTE.evts){
-      if(ev.an && ev.an>CARTE.an) continue;
-      cpt.set(ev.lieu,(cpt.get(ev.lieu)||0)+1);
+    if(CARTE.mode==="vivants"){
+      for(const m of CARTE.mv){                          // lieux fréquentés par les vivants du moment
+        if(m.vn==null || m.vf==null) continue;
+        if(m.vn>CARTE.an || CARTE.an>m.vf) continue;
+        cpt.set(m.de,(cpt.get(m.de)||0)+1);
+        cpt.set(m.vers,(cpt.get(m.vers)||0)+1);
+      }
+    } else {
+      for(const ev of CARTE.evts){
+        if(ev.an && ev.an>CARTE.an) continue;
+        cpt.set(ev.lieu,(cpt.get(ev.lieu)||0)+1);
+      }
     }
-    const tr=n=>n*ech;
     const maxN=Math.max(1,...cpt.values());
-    let pts="";
+    // Un point = un chemin de longueur nulle à bout rond dont l'épaisseur ne suit pas le zoom :
+    // taille écran constante, position ancrée sur la carte, aucun recalcul au zoom.
+    // Les points de diamètre voisin sont réunis dans un seul chemin : quelques dizaines
+    // d'éléments au lieu d'un millier, ce qui garde l'animation fluide.
+    const paquets=new Map();          // diamètre arrondi -> {pleins:[], halos:[]}
+    CARTE.etiq=[]; let selD=null;
     for(const [plac,n] of cpt){
       const L=coordDe(plac); if(!L) continue;
       const [x,y]=projeter(L.lat,L.lon);
-      const r=tr(1.7+Math.sqrt(n/maxN)*6.5);
-      const sel=CARTE.sel===plac;
-      pts+=`<g class="ptLieu" data-plac="${esc(plac)}" style="cursor:pointer">
-        <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(2)}" fill="${sel?"#D4A017":"#F6F0E3"}" stroke="#7E2B24" stroke-width="1" vector-effect="non-scaling-stroke" opacity="0.95"/>
-        ${(L.prec!=="commune"&&L.prec!=="manuel")?`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(r*1.9).toFixed(2)}" fill="none" stroke="#7E2B24" stroke-width="0.8" stroke-dasharray="3 3" vector-effect="non-scaling-stroke" opacity="0.45"/>`:""}
-      </g>`;
+      const seg="M"+x.toFixed(2)+","+y.toFixed(2)+"L"+x.toFixed(2)+","+y.toFixed(2);
+      const D=Math.round((5.5+Math.sqrt(n/maxN)*13)*2)/2;      // diamètre écran, par pas de 0,5 px
+      CARTE.etiq.push({plac, x, y, n, D});
+      if(CARTE.sel===plac){ selD={seg, D}; continue; }
+      let q=paquets.get(D); if(!q){ q={pleins:[], halos:[]}; paquets.set(D,q); }
+      q.pleins.push(seg);
+      if(L.prec!=="commune" && L.prec!=="manuel") q.halos.push(seg);
     }
-    let labs="";
-    if(ech<0.09){
-      const tops=[...cpt.entries()].sort((a,b)=>b[1]-a[1]).slice(0,26);
-      for(const [plac,n] of tops){
-        const L=coordDe(plac); if(!L) continue;
-        const [x,y]=projeter(L.lat,L.lon);
-        const nom=esc(plac.split(",")[0].replace(/^\d{4,5}\s*/,""));
-        labs+=`<text x="${(x+tr(3)).toFixed(1)}" y="${(y+tr(1.2)).toFixed(1)}" font-size="${tr(4.2).toFixed(2)}" fill="#22303F"
-          stroke="#EFEAE0" stroke-width="${tr(1.1).toFixed(2)}" paint-order="stroke">${nom}</text>`;
-      }
-    }
-    gP.innerHTML=pts+labs;
-    $$("#svgCarte .ptLieu").forEach(g=>g.addEventListener("click",ev=>{
-      ev.stopPropagation();
-      if(CARTE.gestes && CARTE.gestes.aBouge()) return;
-      selectionnerLieu(g.dataset.plac);
-    }));
+    let pts="";
+    const chemin=(d,col,w,op)=>`<path d="${d}" stroke="${col}" stroke-width="${w}" ${op?`stroke-opacity="${op}" `:""}stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke"/>`;
+    for(const [D,q] of paquets) if(q.halos.length) pts+=chemin(q.halos.join(""), "#7E2B24", (D*2.1).toFixed(1), 0.20);
+    for(const [D,q] of paquets) pts+=chemin(q.pleins.join(""), "#7E2B24", (D+2.6).toFixed(1));
+    for(const [D,q] of paquets) pts+=chemin(q.pleins.join(""), "#F6F0E3", D.toFixed(1));
+    if(selD) pts+=chemin(selD.seg,"#7E2B24",(selD.D+3.4).toFixed(1))+chemin(selD.seg,"#D4A017",(selD.D+1).toFixed(1));
+    gP.innerHTML=pts;
   }
+  majEtiquettes();
   majInfo(CARTE.nbArcs||0, CARTE.nbMv||0);
+}
+/* Étiquettes des villes : surcouche HTML, repositionnée à chaque changement de vue.
+   Taille de texte constante, jamais de saut, et anti-chevauchement. */
+function majEtiquettes(){
+  const cap=$("#capCarte"), svg=$("#svgCarte");
+  if(!cap || !svg || !CARTE.etiq) return;
+  const r=svg.getBoundingClientRect();
+  if(!r.width) return;
+  const [vx,vy,vw,vh]=CARTE.vb;
+  const kx=r.width/vw, ky=r.height/vh;
+  // plus on zoome, plus on peut nommer de lieux sans surcharger
+  const ech=vw/PROJ.W;
+  const maxEtiq = ech>0.5 ? 0 : ech>0.18 ? 10 : ech>0.06 ? 22 : ech>0.02 ? 40 : 70;
+  if(!maxEtiq){ cap.innerHTML=""; return; }
+
+  const cands=CARTE.etiq
+    .map(e=>({...e, sx:(e.x-vx)*kx, sy:(e.y-vy)*ky}))
+    .filter(e=>e.sx>-40 && e.sx<r.width+40 && e.sy>-20 && e.sy<r.height+20)
+    .sort((a,b)=>b.n-a.n);
+
+  const pris=[], html=[];
+  const chevauche=(a,b)=>!(a.x2<b.x1||b.x2<a.x1||a.y2<b.y1||b.y2<a.y1);
+  for(const e of cands){
+    if(html.length>=maxEtiq) break;
+    const nom=e.plac.split(",")[0].replace(/^\d{4,5}\s*/,"").trim();
+    if(!nom) continue;
+    const larg=nom.length*6.1+8, haut=15;
+    const x=e.sx+9, y=e.sy-7;
+    const boite={x1:x, y1:y, x2:x+larg, y2:y+haut};
+    if(pris.some(b=>chevauche(boite,b))) continue;
+    pris.push({x1:e.sx-7, y1:e.sy-7, x2:e.sx+7, y2:e.sy+7}, boite);
+    html.push(`<span style="position:absolute;left:${x.toFixed(1)}px;top:${y.toFixed(1)}px;
+      font-size:11.5px;line-height:15px;color:#22303F;white-space:nowrap;
+      text-shadow:0 0 3px #EFEAE0,0 0 3px #EFEAE0,0 0 3px #EFEAE0,0 0 2px #EFEAE0">${esc(nom)}</span>`);
+  }
+  cap.innerHTML=html.join("");
 }
 function majInfo(nArcs,nMv){
   const i=$("#infoCarte"); if(!i) return;
-  if(CARTE.sel){ return; }
-  i.innerHTML=`<b>${nMv.toLocaleString("fr-FR")}</b> mouvements affichés (${nArcs} trajets distincts)<br>
-    <span style="color:var(--greffe)">━</span> filiation &nbsp; <span style="color:#33506E">━</span> vie &nbsp;
-    <span style="color:var(--encre-doux)">cercle pointillé = position approchée</span>`;
+  if(CARTE.sel) return;
+  const vivants=(CARTE.vies||[]).reduce((n,[a,b])=>n+(a<=CARTE.an && CARTE.an<=b?1:0),0);
+  const complet = CARTE.an>=CARTE.anMax;
+  i.innerHTML=`
+    <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:3px">
+      <span class="mono" style="font-size:19px;font-weight:600;color:var(--greffe)">${complet && CARTE.mode==="cumul" ? "toutes époques" : CARTE.an}</span>
+      <span style="color:var(--encre-doux)">${CARTE.mode==="vivants" ? "personnes vivantes : "+vivants.toLocaleString("fr-FR") : ""}</span>
+    </div>
+    <b>${nMv.toLocaleString("fr-FR")}</b> mouvement${nMv>1?"s":""} · ${nArcs} trajet${nArcs>1?"s":""} distinct${nArcs>1?"s":""}<br>
+    <span style="color:var(--greffe)">━</span> filiation &nbsp;
+    <span style="color:#33506E">━</span> vie &nbsp;
+    <span style="color:#D4A017">━</span> récent<br>
+    <span style="color:var(--encre-doux);font-size:11px">${CARTE.mode==="vivants" ? "seuls les vivants à cette date sont tracés" : "tout depuis l'origine, cumulé"}</span>`;
 }
 function selectionnerLieu(plac){
   CARTE.sel = CARTE.sel===plac ? null : plac;
@@ -37767,6 +37869,41 @@ function selectionnerLieu(plac){
     ${gens.slice(0,7).map(g=>`<a class="lienPers" data-fiche="${esc(g.p.id)}">${esc(M.nom(g.p.id))}</a> <span class="mono" style="font-size:11px">${g.p.anNais??""}</span>`).join("<br>")}
     ${gens.length>7?`<br><span style="color:var(--encre-doux)">…et ${gens.length-7} autres</span>`:""}
     <br><button class="btn petit clair" style="margin-top:6px" onclick="CARTE.sel=null;dessinerCarte();majInfo(0,0)">Fermer</button>`;
+}
+/* Légende illustrée : chaque symbole est dessiné, pas seulement décrit */
+function majLegende(){
+  const el=$("#legendeCarte"); if(!el) return;
+  const trait=(col,w,op)=>`<svg width="46" height="14" style="vertical-align:middle;flex:none"><path d="M2,11 Q23,-2 44,11" fill="none" stroke="${col}" stroke-width="${w}" opacity="${op}" stroke-linecap="round"/></svg>`;
+  const rond=(r,halo)=>`<svg width="34" height="26" style="vertical-align:middle;flex:none">${halo?`<circle cx="17" cy="13" r="${r*2.1}" fill="#7E2B24" opacity="0.20"/>`:""}<circle cx="17" cy="13" r="${r+1.3}" fill="#7E2B24"/><circle cx="17" cy="13" r="${r}" fill="#F6F0E3"/></svg>`;
+  const ligne=(sym,titre,txt)=>`<div style="display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px dashed var(--ligne)">
+      <span style="width:48px;display:flex;justify-content:center;padding-top:2px">${sym}</span>
+      <span style="flex:1;font-size:13px"><b>${titre}</b><br><span style="color:var(--encre-doux)">${txt}</span></span></div>`;
+
+  const modeVivants = CARTE.mode==="vivants";
+  el.innerHTML = `
+  <div style="display:grid;grid-template-columns:1fr;gap:0">
+    ${ligne(trait("#9E2B33",2.2,0.85),"Trait rouge — filiation",
+      "Relie le lieu de naissance d'un parent à celui de son enfant. C'est le déplacement de la lignée d'une génération à la suivante.")}
+    ${ligne(trait("#33506E",2.2,0.85),"Trait bleu — vie",
+      "Relie le lieu de naissance d'une personne à celui de son décès : le déplacement accompli au cours de sa propre vie.")}
+    ${ligne(trait("#D4A017",3.4,1),"Trait doré — mouvement récent",
+      "Pendant l'animation, les déplacements survenus dans les vingt années précédant la date affichée.")}
+    ${ligne(trait("#9E2B33",4.5,0.85)+trait("#9E2B33",1.1,0.45),"Épaisseur du trait",
+      "Plus le trait est épais et net, plus le même trajet a été emprunté par des membres différents de la famille.")}
+    ${ligne(rond(9,false),"Taille des cercles",
+      "Proportionnelle au nombre d'événements enregistrés dans ce lieu (naissances, mariages, décès…). Les points gardent la même taille à l'écran quel que soit le zoom et restent ancrés à leur commune. Appuyez sur l'un d'eux pour voir qui y est passé.")}
+    ${ligne(rond(5,true),"Point entouré d'un halo",
+      "Position seulement approchée : la commune exacte n'a pas été reconnue, le point est placé au centre du département, de la région ou du pays. Vous pouvez le corriger dans « Gérer les lieux ».")}
+    ${ligne(`<span class="mono" style="font-size:15px;color:var(--greffe);font-weight:600">1850</span>`,"Curseur des années",
+      modeVivants
+        ? "En mode <b>vivants</b>, seuls les déplacements des personnes en vie à cette date sont tracés : le passé s'efface au fur et à mesure que les générations disparaissent."
+        : "En mode <b>cumulé</b>, tous les déplacements survenus jusqu'à cette date restent affichés et s'accumulent.")}
+  </div>
+  <p class="aide" style="margin-top:10px">
+    ${modeVivants
+      ? "Quand la date de décès est inconnue, la personne est considérée en vie pendant 85 ans après sa naissance."
+      : "Passez en mode « seulement les vivants à cette date » pour voir la famille se renouveler au lieu de s'accumuler."}
+  </p>`;
 }
 function majStats(){
   const s=$("#statsCarte"); if(!s) return;
@@ -37791,6 +37928,7 @@ function majStats(){
 function brancherInteractions(svg){
   CARTE.gestes = activerGestes(svg, CARTE, {
     min: 0.35, max: PROJ.W*1.4,
+    pendant: majEtiquettes,          // suit le doigt sans latence
     apres: () => dessinerCarte("zoom")
   });
 }
@@ -37811,7 +37949,7 @@ function basculerAnimation(){
     if(!CARTE.jouer) return;
     const avance=(performance.now()-t0)/duree*(CARTE.anMax-CARTE.anMin);
     CARTE.an=Math.min(CARTE.anMax, Math.round(a0+avance));
-    const c=$("#curAn"); if(c){ c.value=CARTE.an; $("#labAn").textContent="jusqu'en "+CARTE.an; }
+    const c=$("#curAn"); if(c){ c.value=CARTE.an; $("#labAn").textContent=CARTE.an; }
     dessinerCarte("temps");
     if(CARTE.an>=CARTE.anMax){ basculerAnimation(); return; }
     CARTE.timer=requestAnimationFrame(etape);
