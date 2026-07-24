@@ -40,7 +40,8 @@ a{color:var(--greffe)}
 
 /* ---------- Coquille ---------- */
 #app{display:grid;grid-template-rows:auto auto 1fr;min-height:100vh}
-header.barre{display:flex;align-items:center;gap:14px;padding:10px 18px;background:var(--encre);color:var(--papier);flex-wrap:wrap}
+header.barre{display:flex;align-items:center;gap:14px;background:var(--encre);color:var(--papier);flex-wrap:wrap;
+  padding:calc(10px + env(safe-area-inset-top)) calc(18px + env(safe-area-inset-right)) 10px calc(18px + env(safe-area-inset-left))}
 .marque{font-family:var(--f-display);font-size:21px;letter-spacing:.5px;white-space:nowrap;display:flex;align-items:center;gap:10px}
 .sceau-hdr{width:30px;height:30px;flex:none;object-fit:contain}
 .sceau-vide{width:76px;height:76px;margin-bottom:4px;object-fit:contain}
@@ -50,7 +51,8 @@ header.barre{display:flex;align-items:center;gap:14px;padding:10px 18px;backgrou
 #etatSauvegarde{font-size:12px;color:#9FB0C4;margin-left:auto;white-space:nowrap}
 #rechGlobale{background:#33445A;border:1px solid #4A5A6E;border-radius:6px;color:var(--papier);padding:6px 10px;width:200px}
 #rechGlobale::placeholder{color:#8FA0B4}
-nav.onglets{display:flex;gap:2px;background:var(--papier-2);border-bottom:1px solid var(--ligne);padding:0 12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+nav.onglets{display:flex;gap:2px;background:var(--papier-2);border-bottom:1px solid var(--ligne);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+  padding:0 calc(12px + env(safe-area-inset-right)) 0 calc(12px + env(safe-area-inset-left))}
 nav.onglets::-webkit-scrollbar{display:none}
 @media (max-width:640px){
   header.barre{gap:8px;padding:8px 12px}
@@ -75,7 +77,8 @@ nav.onglets::-webkit-scrollbar{display:none}
 }
 nav.onglets button{padding:11px 14px;font-size:14px;color:var(--encre-doux);border-bottom:2px solid transparent;white-space:nowrap}
 nav.onglets button.actif{color:var(--greffe);border-bottom-color:var(--greffe);font-weight:600}
-main{padding:20px;max-width:1180px;width:100%;margin:0 auto}
+main{max-width:1180px;width:100%;margin:0 auto;
+  padding:20px calc(20px + env(safe-area-inset-right)) calc(20px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left))}
 .vue{display:none}.vue.actif{display:block}
 
 /* ---------- Composants ---------- */
@@ -88,7 +91,8 @@ h1.titreVue{font-family:var(--f-display);font-size:26px;font-weight:500;margin-b
 .grille.c3{grid-template-columns:repeat(3,1fr)}
 .grille.c4{grid-template-columns:repeat(4,1fr)}
 @media(max-width:820px){.grille.c2,.grille.c3,.grille.c4{grid-template-columns:1fr 1fr}}
-@media(max-width:520px){.grille.c2,.grille.c3,.grille.c4{grid-template-columns:1fr}main{padding:12px}}
+@media(max-width:520px){.grille.c2,.grille.c3,.grille.c4{grid-template-columns:1fr}
+  main{padding:12px calc(12px + env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) calc(12px + env(safe-area-inset-left))}}
 .stat{text-align:center;padding:14px 8px}
 .stat .n{font-family:var(--f-display);font-size:30px;color:var(--greffe)}
 .stat .l{font-size:12px;color:var(--encre-doux);text-transform:uppercase;letter-spacing:.6px;margin-top:2px}
@@ -143,6 +147,8 @@ table.reg tr.clic:hover{background:#F1EDE3}
 .famBloc{border:1px solid var(--ligne);border-radius:8px;padding:12px;margin-bottom:10px;background:#FCFBF7}
 .famBloc h3{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--encre-doux);margin-bottom:8px}
 .famBloc ul{list-style:none}
+.citation{font-size:12px;color:var(--encre-doux);padding:2px 0 2px 12px;border-left:2px solid var(--ligne-forte);margin-top:4px}
+.citation a{color:var(--greffe)}
 .famBloc li{padding:3px 0}
 
 /* ---------- Arbre SVG ---------- */
@@ -197,7 +203,7 @@ dialog .dPied{display:flex;justify-content:flex-end;gap:8px;padding:12px 18px;bo
 #resRecherche small{color:var(--encre-doux);font-family:var(--f-data)}
 
 /* Toast */
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--encre);color:var(--papier);padding:10px 18px;border-radius:8px;font-size:14px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:100}
+#toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:var(--encre);color:var(--papier);padding:10px 18px;border-radius:8px;font-size:14px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:100}
 #toast.visible{opacity:1}
 
 /* Impression fiche */
@@ -217,6 +223,8 @@ dialog .dPied{display:flex;justify-content:flex-end;gap:8px;padding:12px 18px;bo
   <div class="marque"><img class="sceau-hdr" alt="" src="data:image/png;base64,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"><span>Koseki <em lang="ja">戸籍</em></span></div>
   <select id="selProjet" aria-label="Projet"></select>
   <button class="btn petit clair" id="btnNouvProjet" title="Nouveau projet">+ Projet</button>
+  <button class="btn petit clair" id="btnAnnuler" title="Annuler" aria-label="Annuler">↶</button>
+  <button class="btn petit clair" id="btnRefaire" title="Rétablir" aria-label="Rétablir">↷</button>
   <div style="position:relative;margin-left:auto;display:flex;gap:10px;align-items:center">
     <input id="rechGlobale" type="search" placeholder="Rechercher une personne…" autocomplete="off">
     <div id="resRecherche"></div>
@@ -229,8 +237,18 @@ dialog .dPied{display:flex;justify-content:flex-end;gap:8px;padding:12px 18px;bo
   <button data-vue="personnes">Personnes</button>
   <button data-vue="fiche">Fiche</button>
   <button data-vue="arbre">Arbre</button>
+  <button data-vue="eventail">Éventail</button>
   <button data-vue="descendance">Descendance</button>
+  <button data-vue="sosas">Sosas</button>
+  <button data-vue="frise">Frise</button>
+  <button data-vue="parente">Parenté</button>
   <button data-vue="carte">Carte</button>
+  <button data-vue="sources">Sources</button>
+  <button data-vue="stats">Statistiques</button>
+  <button data-vue="recherche">Recherche</button>
+  <button data-vue="doublons">Doublons</button>
+  <button data-vue="lieux">Lieux</button>
+  <button data-vue="saisie">Saisie</button>
   <button data-vue="qualite">Qualité</button>
   <button data-vue="donnees">Données</button>
 </nav>
@@ -242,6 +260,16 @@ dialog .dPied{display:flex;justify-content:flex-end;gap:8px;padding:12px 18px;bo
   <section class="vue" id="vue-arbre"></section>
   <section class="vue" id="vue-descendance"></section>
   <section class="vue" id="vue-carte"></section>
+  <section class="vue" id="vue-eventail"></section>
+  <section class="vue" id="vue-sosas"></section>
+  <section class="vue" id="vue-frise"></section>
+  <section class="vue" id="vue-parente"></section>
+  <section class="vue" id="vue-stats"></section>
+  <section class="vue" id="vue-sources"></section>
+  <section class="vue" id="vue-recherche"></section>
+  <section class="vue" id="vue-doublons"></section>
+  <section class="vue" id="vue-lieux"></section>
+  <section class="vue" id="vue-saisie"></section>
   <section class="vue" id="vue-qualite"></section>
   <section class="vue" id="vue-donnees"></section>
 </main>
@@ -272,6 +300,38 @@ dialog .dPied{display:flex;justify-content:flex-end;gap:8px;padding:12px 18px;bo
     <button class="btn clair" data-fermer>Annuler</button>
     <button class="btn rouge" id="btnEnrLien">Lier</button>
   </div>
+</dialog>
+
+<dialog id="dlgSource">
+  <div class="dTete"><h2 id="dlgSourceTitre">Source</h2><button class="fermer" data-fermer>&times;</button></div>
+  <div class="dCorps" id="dlgSourceCorps"></div>
+  <div class="dPied"><button class="btn clair" data-fermer>Annuler</button>
+    <button class="btn rouge" onclick="enregistrerSource()">Enregistrer</button></div>
+</dialog>
+<dialog id="dlgCit">
+  <div class="dTete"><h2>Citer une source</h2><button class="fermer" data-fermer>&times;</button></div>
+  <div class="dCorps" id="dlgCitCorps"></div>
+  <div class="dPied"><button class="btn clair" data-fermer>Annuler</button>
+    <button class="btn rouge" onclick="enregistrerCitation()">Citer</button></div>
+</dialog>
+<dialog id="dlgMedia">
+  <div class="dTete"><h2 id="dlgMediaTitre">Document</h2><button class="fermer" data-fermer>&times;</button></div>
+  <div class="dCorps" id="dlgMediaCorps"></div>
+  <div class="dPied"><button class="btn clair" data-fermer>Annuler</button>
+    <button class="btn rouge" onclick="enregistrerMedia()">Enregistrer</button></div>
+</dialog>
+
+<dialog id="dlgFusion" style="max-width:640px">
+  <div class="dTete"><h2>Fusionner deux fiches</h2><button class="fermer" data-fermer>&times;</button></div>
+  <div class="dCorps" id="dlgFusionCorps"></div>
+  <div class="dPied"><button class="btn clair" data-fermer>Annuler</button>
+    <button class="btn rouge" id="btnFusionner">Fusionner</button></div>
+</dialog>
+<dialog id="dlgLieu">
+  <div class="dTete"><h2>Modifier un lieu</h2><button class="fermer" data-fermer>&times;</button></div>
+  <div class="dCorps" id="dlgLieuCorps"></div>
+  <div class="dPied"><button class="btn clair" data-fermer>Annuler</button>
+    <button class="btn rouge" onclick="enregistrerLieu()">Enregistrer</button></div>
 </dialog>
 
 <dialog id="dlgConfirm">
@@ -392,12 +452,16 @@ function texteNote(rec, b){ // NOTE avec CONC/CONT
 
 /* ---------- Modèle : index construit sur les enregistrements ---------- */
 const M = {
-  enregs: [], indis: new Map(), fams: new Map(),
+  enregs: [], indis: new Map(), fams: new Map(), sources: new Map(), medias: new Map(),
+  version:0,
   reconstruire(){
-    this.indis.clear(); this.fams.clear();
+    this.version++;
+    this.indis.clear(); this.fams.clear(); this.sources.clear(); this.medias.clear();
     for(const r of this.enregs){
       if(r.tag === "INDI" && r.xref) this.indis.set(r.xref, this.indexerIndi(r));
       else if(r.tag === "FAM" && r.xref) this.fams.set(r.xref, this.indexerFam(r));
+      else if(r.tag === "SOUR" && r.xref) this.sources.set(r.xref, indexerSource(r));
+      else if(r.tag === "OBJE" && r.xref) this.medias.set(r.xref, indexerMedia(r));
     }
   },
   indexerIndi(r){
@@ -457,13 +521,172 @@ function parentsDe(id){
   return res;
 }
 
+/* =====================================================================
+   Sources, citations et médias
+   Les sources sont des enregistrements GEDCOM standard (0 @S..@ SOUR),
+   les citations des sous-blocs SOUR rattachés à une personne ou un événement.
+   Les images sont conservées dans IndexedDB et référencées par un identifiant.
+   ===================================================================== */
+const QUAY = { "3":"preuve directe", "2":"indice sérieux", "1":"témoignage indirect", "0":"non fiable" };
+
+function indexerSource(r){
+  const s = { id:r.xref, rec:r, titre:"", auteur:"", publi:"", depot:"", lien:"", cote:"", notes:[], abrege:"", texte:"" };
+  for(const b of blocs(r)){
+    const v = b.val;
+    switch(b.tag){
+      case "TITL": s.titre = texteNote(r,b); break;
+      case "ABBR": s.abrege = texteNote(r,b); break;
+      case "TEXT": s.texte = texteNote(r,b); break;
+      case "AUTH": s.auteur = texteNote(r,b); break;
+      case "PUBL": s.publi = texteNote(r,b); break;
+      case "REPO": s.depot = v.startsWith("@") ? v : texteNote(r,b); break;
+      case "WWW": case "_URL": s.lien = v; break;
+      case "CALN": s.cote = v; break;
+      case "NOTE": s.notes.push(texteNote(r,b)); break;
+    }
+  }
+  // MyHeritage range souvent l'adresse de l'acte en ligne dans ABBR, et laisse TITL vide :
+  // on récupère l'un et l'autre plutôt que d'afficher « sans titre ».
+  if(!s.lien){
+    const cand = [s.abrege, s.titre, s.publi].find(x => /^https?:\/\//i.test(x||""));
+    if(cand) s.lien = cand.trim();
+  }
+  if(!s.titre && s.abrege) s.titre = s.abrege;
+  if(!s.titre && s.lien){
+    try { const u=new URL(s.lien); s.titre = "Acte en ligne — " + u.hostname.replace(/^www\./,""); }
+    catch(e){ s.titre = "Acte en ligne"; }
+  }
+  if(!s.titre && s.texte) s.titre = s.texte.slice(0,70);
+  if(!s.titre) s.titre = "(source sans titre)";
+  return s;
+}
+function indexerMedia(r){
+  const m = { id:r.xref, rec:r, titre:"", fichier:"", format:"", local:null };
+  for(const b of blocs(r)){
+    if(b.tag==="TITL") m.titre = texteNote(r,b);
+    else if(b.tag==="FILE"){
+      m.fichier = b.val;
+      for(let i=b.debut+1;i<b.fin;i++){
+        if(rLigne(r,i).tag==="FORM") m.format = rLigne(r,i).val;
+        if(rLigne(r,i).tag==="TITL") m.titre = m.titre || rLigne(r,i).val;
+      }
+    }
+    else if(b.tag==="_KOSEKI") m.local = b.val;
+  }
+  if(!m.titre) m.titre = m.fichier || "(document)";
+  return m;
+}
+const rLigne = (r,i) => r.lignes[i];
+
+/* Citations rattachées à un bloc (événement) ou à l'enregistrement entier */
+function citationsDe(rec, debut, fin){
+  const out = [];
+  const niv = debut==null ? 1 : 2;
+  const d = debut==null ? -1 : debut, f = debut==null ? rec.lignes.length : fin;
+  for(let i=d+1; i<f; i++){
+    const l = rec.lignes[i];
+    if(l.niv===niv && l.tag==="SOUR" && /^@.+@$/.test(l.val)){
+      let j=i+1, page="", quay="", note="";
+      while(j<f && rec.lignes[j].niv>niv){
+        const s=rec.lignes[j];
+        if(s.niv===niv+1 && s.tag==="PAGE") page=s.val;
+        if(s.niv===niv+1 && s.tag==="QUAY") quay=s.val;
+        if(s.niv===niv+1 && s.tag==="NOTE") note=s.val;
+        j++;
+      }
+      out.push({ sid:l.val, page, quay, note, debut:i, fin:j });
+    }
+    if(debut==null && l.niv===1 && l.tag!=="SOUR"){ /* on parcourt tout : rien à faire */ }
+  }
+  return out;
+}
+function mediasDe(rec, debut, fin){
+  const out = [];
+  const niv = debut==null ? 1 : 2;
+  const d = debut==null ? -1 : debut, f = debut==null ? rec.lignes.length : fin;
+  for(let i=d+1; i<f; i++){
+    const l = rec.lignes[i];
+    if(l.niv===niv && l.tag==="OBJE" && /^@.+@$/.test(l.val)) out.push({ mid:l.val, debut:i });
+  }
+  return out;
+}
+function ajouterCitation(rec, bloc, sid, page, quay, note){
+  const niv = bloc ? 2 : 1;
+  const nl = [{ niv, tag:"SOUR", val:sid }];
+  if(page) nl.push({ niv:niv+1, tag:"PAGE", val:page });
+  if(quay) nl.push({ niv:niv+1, tag:"QUAY", val:quay });
+  if(note) nl.push({ niv:niv+1, tag:"NOTE", val:note });
+  if(bloc) rec.lignes.splice(bloc.fin, 0, ...nl);
+  else rec.lignes.push(...nl);
+}
+function attacherMedia(rec, bloc, mid){
+  const niv = bloc ? 2 : 1;
+  const l = { niv, tag:"OBJE", val:mid };
+  if(bloc) rec.lignes.splice(bloc.fin, 0, l); else rec.lignes.push(l);
+}
+function retirerLignes(rec, debut, fin){ rec.lignes.splice(debut, fin-debut); }
+
+function creerSource(d){
+  const rec = { xref: prochainId("S"), tag:"SOUR", lignes: [] };
+  majSourceRec(rec, d);
+  insererEnreg(rec);
+  return rec.xref;
+}
+function majSourceRec(rec, d){
+  const pose = (tag, val) => {
+    const b = blocs(rec).find(x => x.tag === tag);
+    if(b) retirerLignes(rec, b.debut, b.fin);
+    if(val) rec.lignes.push({ niv:1, tag, val });
+  };
+  pose("TITL", d.titre); pose("AUTH", d.auteur); pose("PUBL", d.publi);
+  pose("REPO", d.depot); pose("CALN", d.cote); pose("WWW", d.lien);
+  const bn = blocs(rec).find(x => x.tag === "NOTE");
+  if(bn) retirerLignes(rec, bn.debut, bn.fin);
+  if(d.note) rec.lignes.push({ niv:1, tag:"NOTE", val:d.note });
+}
+function creerMediaLien(titre, url){
+  const rec = { xref: prochainId("M"), tag:"OBJE", lignes: [
+    { niv:1, tag:"FILE", val:url },
+    { niv:2, tag:"FORM", val:(url.split(".").pop()||"").slice(0,4).toLowerCase() || "url" },
+    { niv:1, tag:"TITL", val:titre || url }
+  ]};
+  insererEnreg(rec); return rec.xref;
+}
+async function creerMediaFichier(fichier, titre){
+  const id = "med_" + crypto.randomUUID();
+  const donnees = await new Promise((res, rej) => {
+    const fr = new FileReader(); fr.onload = () => res(fr.result); fr.onerror = rej;
+    fr.readAsDataURL(fichier);
+  });
+  await BD.mEcrire({ id, projet: E.projet.id, nom: fichier.name, type: fichier.type, donnees });
+  const rec = { xref: prochainId("M"), tag:"OBJE", lignes: [
+    { niv:1, tag:"FILE", val:"medias/" + fichier.name },
+    { niv:2, tag:"FORM", val:(fichier.name.split(".").pop()||"jpg").toLowerCase() },
+    { niv:1, tag:"TITL", val:titre || fichier.name },
+    { niv:1, tag:"_KOSEKI", val:id }
+  ]};
+  insererEnreg(rec); return rec.xref;
+}
+/* Combien de fois une source est-elle citée ? */
+function usagesSource(sid){
+  let n = 0;
+  for(const r of M.enregs)
+    if(r.tag==="INDI" || r.tag==="FAM")
+      for(const l of r.lignes) if(l.tag==="SOUR" && l.val===sid) n++;
+  return n;
+}
+
 /* ---------- Persistance IndexedDB (multi-projets) ---------- */
 const BD = {
   bd: null,
   ouvrir(){
     return new Promise((res, rej) => {
-      const rq = indexedDB.open("koseki", 1);
-      rq.onupgradeneeded = e => e.target.result.createObjectStore("projets", { keyPath: "id" });
+      const rq = indexedDB.open("koseki", 2);
+      rq.onupgradeneeded = e => {
+        const bd = e.target.result;
+        if(!bd.objectStoreNames.contains("projets")) bd.createObjectStore("projets", { keyPath: "id" });
+        if(!bd.objectStoreNames.contains("medias"))  bd.createObjectStore("medias",  { keyPath: "id" });
+      };
       rq.onsuccess = e => { this.bd = e.target.result; res(); };
       rq.onerror = () => rej(rq.error);
     });
@@ -472,8 +695,57 @@ const BD = {
   tous(){ return new Promise(r => { const q = this.tx("readonly").getAll(); q.onsuccess = () => r(q.result); }); },
   lire(id){ return new Promise(r => { const q = this.tx("readonly").get(id); q.onsuccess = () => r(q.result); }); },
   ecrire(p){ return new Promise(r => { const q = this.tx("readwrite").put(p); q.onsuccess = () => r(); }); },
-  suppr(id){ return new Promise(r => { const q = this.tx("readwrite").delete(id); q.onsuccess = () => r(); }); }
+  suppr(id){ return new Promise(r => { const q = this.tx("readwrite").delete(id); q.onsuccess = () => r(); }); },
+  /* médias : images d'actes conservées hors du GEDCOM, référencées par identifiant */
+  mTx(mode){ return this.bd.transaction("medias", mode).objectStore("medias"); },
+  mLire(id){ return new Promise(r => { const q = this.mTx("readonly").get(id); q.onsuccess = () => r(q.result); }); },
+  mTous(){ return new Promise(r => { const q = this.mTx("readonly").getAll(); q.onsuccess = () => r(q.result); }); },
+  mEcrire(m){ return new Promise(r => { const q = this.mTx("readwrite").put(m); q.onsuccess = () => r(); }); },
+  mSuppr(id){ return new Promise(r => { const q = this.mTx("readwrite").delete(id); q.onsuccess = () => r(); }); }
 };
+
+/* ---------- Historique : annuler / refaire ----------
+   Chaque étape mémorise l'état complet du registre sous forme de texte GEDCOM :
+   c'est simple, sûr, et le coût reste modeste comparé à une action de l'utilisateur. */
+const HIST = { piles: [], index: -1, max: 20, gele: false };
+function histoireInit(){ HIST.piles = [{ nom:"état initial", ged: serialiserGedcom(M.enregs) }]; HIST.index = 0; majBoutonsHistoire(); }
+function histoireEnregistrer(nom){
+  if(HIST.gele) return;
+  const ged = serialiserGedcom(M.enregs);
+  if(HIST.index >= 0 && HIST.piles[HIST.index] && HIST.piles[HIST.index].ged === ged) return;
+  HIST.piles = HIST.piles.slice(0, HIST.index + 1);
+  HIST.piles.push({ nom, ged });
+  if(HIST.piles.length > HIST.max) HIST.piles.shift();
+  HIST.index = HIST.piles.length - 1;
+  majBoutonsHistoire();
+}
+function histoireAller(delta){
+  const i = HIST.index + delta;
+  if(i < 0 || i >= HIST.piles.length) return;
+  HIST.index = i;
+  HIST.gele = true;
+  M.enregs = parseGedcom(HIST.piles[i].ged);
+  M.reconstruire();
+  marquerModifie();
+  HIST.gele = false;
+  majBoutonsHistoire();
+  const v = $$("nav.onglets button.actif")[0]?.dataset.vue || "tableau";
+  afficherVue(v);
+  toast(delta < 0 ? "Annulé : " + HIST.piles[i+1].nom : "Rétabli : " + HIST.piles[i].nom);
+}
+function majBoutonsHistoire(){
+  const a = $("#btnAnnuler"), r = $("#btnRefaire");
+  if(a){ a.disabled = HIST.index <= 0; a.title = HIST.index > 0 ? "Annuler : " + HIST.piles[HIST.index].nom : "Rien à annuler"; }
+  if(r){ r.disabled = HIST.index >= HIST.piles.length - 1; }
+}
+/* Toute modification passe par ici : le registre est réindexé, l'étape mémorisée, l'écran rafraîchi. */
+function modifier(nom, fn){
+  const r = fn();
+  M.reconstruire();
+  histoireEnregistrer(nom);
+  marquerModifie();
+  return r;
+}
 
 /* ---------- État applicatif ---------- */
 const E = {
@@ -484,6 +756,7 @@ const E = {
   sauvegardePrevue: null
 };
 function marquerModifie(){
+  CARTE.version = -1;                   // la carte sera recalculée à la prochaine ouverture
   $("#etatSauvegarde").textContent = "Modifications…";
   clearTimeout(E.sauvegardePrevue);
   E.sauvegardePrevue = setTimeout(sauvegarder, 700);
@@ -670,7 +943,7 @@ function activerGestes(svg, etat, opts){
 function afficherVue(v){
   $$("nav.onglets button").forEach(b => b.classList.toggle("actif", b.dataset.vue === v));
   $$(".vue").forEach(s => s.classList.toggle("actif", s.id === "vue-"+v));
-  const rendu = { tableau:vueTableau, personnes:vuePersonnes, fiche:vueFiche, arbre:vueArbre, descendance:vueDescendance, carte:vueCarte, qualite:vueQualite, donnees:vueDonnees };
+  const rendu = { tableau:vueTableau, personnes:vuePersonnes, fiche:vueFiche, arbre:vueArbre, descendance:vueDescendance, carte:vueCarte, eventail:vueEventail, sosas:vueSosas, frise:vueFrise, parente:vueParente, stats:vueStats, recherche:vueRecherche, doublons:vueDoublons, lieux:vueLieux, saisie:vueSaisie, sources:vueSources, qualite:vueQualite, donnees:vueDonnees };
   rendu[v]?.();
 }
 
@@ -731,6 +1004,15 @@ function vueTableau(){
       ${topPatro.map(([n,c])=>`<li><span>${esc(n)}</span><b>${c}</b></li>`).join("")}</ul></div>
     <div class="carte"><h2>Communes les plus citées</h2><ul class="listeTop">
       ${topLieux.map(([n,c])=>`<li><span>${esc(n)}</span><b>${c}</b></li>`).join("")}</ul></div>
+  </div>
+  <div class="carte pasImpr">
+    <h2>Poursuivre</h2>
+    <div class="grille c4" style="gap:10px">
+      <button class="btn clair" onclick="afficherVue('recherche')" style="justify-content:center;text-align:center">Où chercher ensuite</button>
+      <button class="btn clair" onclick="afficherVue('saisie')" style="justify-content:center;text-align:center">Dépouiller un registre</button>
+      <button class="btn clair" onclick="afficherVue('doublons')" style="justify-content:center;text-align:center">Traiter les doublons</button>
+      <button class="btn clair" onclick="afficherVue('stats')" style="justify-content:center;text-align:center">Voir les statistiques</button>
+    </div>
   </div>
   <div class="carte">
     <h2>Repères</h2>
@@ -816,6 +1098,7 @@ function vueFiche(){
   for(const f of parents) for(const e of f.enfants) if(e !== p.id) freres.add(e);
   const evtsAff = p.evts.slice().sort((a,b)=>(annee(a.date)??9999)-(annee(b.date)??9999));
   const anomP = controlerQualite().filter(a => a.id === p.id);
+  setTimeout(apresFiche, 0);
 
   el.innerHTML = `
   <div class="acte">
@@ -834,19 +1117,49 @@ function vueFiche(){
         <button class="btn petit clair" onclick="E.racineArbre='${esc(p.id)}';afficherVue('arbre')">Voir son ascendance</button>
         <button class="btn petit clair" onclick="E.racineDesc='${esc(p.id)}';afficherVue('descendance')">Voir sa descendance</button>
         <button class="btn petit clair" onclick="window.print()">Imprimer la fiche</button>
+        <button class="btn petit clair" onclick="ouvrirLivret()">Livret</button>
         <button class="btn petit clair" style="color:var(--greffe)" onclick="confirmerSupprPersonne('${esc(p.id)}')">Supprimer</button>
       </div>
 
       <h2 style="font-family:var(--f-display);font-size:16px;margin-bottom:4px">Événements</h2>
       <div>
-        ${evtsAff.map(e => `<div class="evtLigne">
+        ${evtsAff.map(e => {
+          const cits = citationsDe(p.rec, e.b.debut, e.b.fin);
+          return `<div class="evtLigne">
           <span class="tE">${esc(LIB_EVT[e.tag] || e.tag)}</span>
-          <span><span class="dE">${esc(dateFr(e.date)) || ""}</span> <span class="pE">${e.lieu ? "— "+esc(e.lieu) : ""}${e.tag==="OCCU" && e.val ? " "+esc(e.val) : (e.tag==="EVEN" && e.val ? " "+esc(e.val) : "")}</span></span>
-          <span class="pasImpr"><button class="btn petit clair" onclick='ouvrirDlgEvt("${esc(p.id)}",${e.b.debut})'>Modifier</button></span>
-        </div>`).join("") || `<p class="aide">Aucun événement enregistré.</p>`}
+          <span><span class="dE">${esc(dateFr(e.date)) || ""}</span> <span class="pE">${e.lieu ? "— "+esc(e.lieu) : ""}${e.tag==="OCCU" && e.val ? " "+esc(e.val) : (e.tag==="EVEN" && e.val ? " "+esc(e.val) : "")}</span>
+            ${cits.map(c=>{
+              const s=M.sources.get(c.sid);
+              return `<div class="citation">${s&&s.lien?`<a href="${esc(s.lien)}" target="_blank" rel="noopener">${esc(s?s.titre:c.sid)}</a>`:esc(s?s.titre:c.sid)}${c.page?` — <span class="mono">${esc(c.page)}</span>`:""}${c.quay?` <span class="badge ${c.quay==="3"?"ok":""}">${esc(QUAY[c.quay]||"")}</span>`:""}</div>`;
+            }).join("")}
+          </span>
+          <span class="pasImpr" style="white-space:nowrap">
+            <button class="btn petit clair" title="Citer une source" onclick='ouvrirDlgCitation("${esc(p.id)}",${e.b.debut})'>⛭</button>
+            <button class="btn petit clair" onclick='ouvrirDlgEvt("${esc(p.id)}",${e.b.debut})'>Modifier</button></span>
+        </div>`;}).join("") || `<p class="aide">Aucun événement enregistré.</p>`}
       </div>
       <p class="pasImpr" style="margin-top:8px"><button class="btn petit clair" onclick='ouvrirDlgEvt("${esc(p.id)}",null)'>+ Ajouter un événement</button></p>
 
+      ${(() => {
+        const citG = citationsDe(p.rec, null, null).filter(c => {
+          // citations rattachées à la personne elle-même (niveau 1)
+          return p.rec.lignes[c.debut] && p.rec.lignes[c.debut].niv === 1;
+        });
+        const meds = mediasDe(p.rec, null, null);
+        return `<h2 style="font-family:var(--f-display);font-size:16px;margin:16px 0 4px">Sources et documents</h2>
+        ${citG.map(c=>{ const s=M.sources.get(c.sid);
+          return `<div class="citation">${s&&s.lien?`<a href="${esc(s.lien)}" target="_blank" rel="noopener">${esc(s?s.titre:c.sid)}</a>`:esc(s?s.titre:c.sid)}${c.page?` — <span class="mono">${esc(c.page)}</span>`:""}</div>`;}).join("")
+          || `<p class="aide">Aucune source citée pour cette personne.</p>`}
+        ${meds.length ? `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-top:8px">
+          ${meds.map(m=>{ const md=M.medias.get(m.mid); if(!md) return "";
+            return `<div style="border:1px solid var(--ligne);border-radius:7px;padding:6px;font-size:11.5px">
+              <div class="apercuMedia" data-media="${esc(md.id)}" style="height:80px;background:#F1EDE3;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden">…</div>
+              <div style="margin-top:4px">${esc(md.titre)}</div></div>`;}).join("")}
+        </div>` : ""}
+        <p class="pasImpr" style="margin-top:8px">
+          <button class="btn petit clair" onclick='ouvrirDlgCitation("${esc(p.id)}",null)'>+ Citer une source</button>
+          <button class="btn petit clair" onclick='ouvrirDlgMedia(null,"${esc(p.id)}")'>+ Joindre un document</button></p>`;
+      })()}
       ${p.notes.length ? `<h2 style="font-family:var(--f-display);font-size:16px;margin:14px 0 4px">Notes</h2>
         ${p.notes.map(n=>`<p style="font-size:13.5px;white-space:pre-wrap;color:var(--encre-doux)">${esc(n)}</p>`).join("")}` : ""}
     </div>
@@ -874,6 +1187,48 @@ function vueFiche(){
     </div>
   </div>`;
 }
+function apresFiche(){ chargerApercusMedias(); }
+
+/* Livret : dossier complet d'une personne, mis en page pour l'impression */
+function ouvrirLivret(){
+  const p = M.indis.get(E.ficheId); if(!p) return;
+  const { sosa } = calculerSosas(p.id, 5);
+  const unions = p.fams.map(f=>M.fams.get(f)).filter(Boolean);
+  const w = window.open("", "_blank");
+  if(!w){ toast("Autorisez les fenêtres pour ouvrir le livret"); return; }
+  const evt = e => `<tr><td style="width:130px;color:#6b6b6b">${esc(LIB_EVT[e.tag]||e.tag)}</td>
+    <td>${esc(dateFr(e.date))||""} ${e.lieu?`— ${esc(e.lieu)}`:""} ${e.val?esc(e.val):""}</td></tr>`;
+  const cits = citationsDe(p.rec, null, null).map(c=>{
+    const s=M.sources.get(c.sid);
+    return `<li>${esc(s?s.titre:c.sid)}${c.page?` — ${esc(c.page)}`:""}${s&&s.depot?` <i>(${esc(s.depot)})</i>`:""}</li>`;}).join("");
+  w.document.write(`<!doctype html><html lang="fr"><head><meta charset="utf-8">
+    <title>Livret — ${esc(M.nom(p.id))}</title>
+    <style>
+      body{font-family:Georgia,serif;max-width:780px;margin:24px auto;padding:0 20px;color:#222;line-height:1.5}
+      h1{font-size:26px;margin:0 0 2px} h2{font-size:15px;margin:20px 0 6px;border-bottom:1px solid #ccc;padding-bottom:3px}
+      .dates{color:#666;font-family:monospace;margin-bottom:14px}
+      table{width:100%;border-collapse:collapse;font-size:13.5px} td{padding:3px 0;vertical-align:top}
+      ul{font-size:13.5px;padding-left:18px} .sosa{font-family:monospace;color:#9E2B33}
+      @media print{ body{margin:0} }
+    </style></head><body>
+    <h1>${esc(p.givn)} ${esc(p.surn.toUpperCase())}</h1>
+    <div class="dates">${p.anNais??"?"} – ${p.anDec??""}${p.anNais&&p.anDec?` · ${p.anDec-p.anNais} ans`:""}</div>
+    <h2>État civil et événements</h2><table>${p.evts.map(evt).join("")||"<tr><td>—</td></tr>"}</table>
+    <h2>Ascendance sur cinq générations</h2>
+    <table>${[...sosa.entries()].sort((a,b)=>a[0]-b[0]).slice(1).map(([n,id])=>{
+      const a=M.indis.get(id);
+      return `<tr><td class="sosa" style="width:52px">${n}</td><td>${esc(a.givn)} <b>${esc(a.surn)}</b>
+        <span style="color:#777;font-family:monospace;font-size:12px">${a.anNais??"?"}–${a.anDec??""}</span></td></tr>`;}).join("")}</table>
+    ${unions.map(f=>{ const c=f.mari===p.id?f.femme:f.mari;
+      return `<h2>Union${c?` avec ${esc(M.nom(c))}`:""}${f.mar?` — ${esc(dateFr(f.mar))}`:""}</h2>
+      <ul>${f.enfants.map(e=>{const x=M.indis.get(e); return x?`<li>${esc(x.givn)} ${esc(x.surn)} <span style="color:#777;font-family:monospace;font-size:12px">${x.anNais??"?"}</span></li>`:"";}).join("")||"<li>Sans enfant enregistré</li>"}</ul>`;}).join("")}
+    ${cits?`<h2>Sources</h2><ul>${cits}</ul>`:""}
+    ${p.notes.length?`<h2>Notes</h2><p style="font-size:13.5px;white-space:pre-wrap">${esc(p.notes.join("\n\n"))}</p>`:""}
+    <p style="margin-top:26px;font-size:11px;color:#999">Établi avec Koseki — ${new Date().toLocaleDateString("fr-FR")}</p>
+    </body></html>`);
+  w.document.close();
+  setTimeout(()=>w.print(), 400);
+}
 function profondeurAscendance(id, vus = new Set()){
   if(vus.has(id)) return 0;
   vus.add(id);
@@ -884,6 +1239,194 @@ function profondeurAscendance(id, vus = new Set()){
 </script>
 <script>
 "use strict";
+/* ---------- Vue Sources ---------- */
+const FS = { q:"" };
+function vueSources(){
+  const el = $("#vue-sources");
+  const src = [...M.sources.values()];
+  const q = norm(FS.q);
+  const liste = q ? src.filter(s => norm(s.titre+" "+s.auteur+" "+s.depot+" "+s.cote).includes(q)) : src;
+  liste.sort((a,b)=>a.titre.localeCompare(b.titre,"fr"));
+  el.innerHTML = `
+  <h1 class="titreVue">Sources et actes</h1>
+  <p class="sousTitre">${src.length} source${src.length>1?"s":""} · ${M.medias.size} document${M.medias.size>1?"s":""} joint${M.medias.size>1?"s":""}</p>
+  <div class="carte pasImpr"><div class="rang">
+    <input id="fsQ" placeholder="Titre, dépôt, cote…" value="${esc(FS.q)}" style="flex:1;min-width:150px;border:1px solid var(--ligne-forte);border-radius:6px;padding:7px 9px">
+    <button class="btn rouge" onclick="ouvrirDlgSource(null)">+ Nouvelle source</button>
+    <button class="btn clair" onclick="ouvrirDlgMedia(null,null)">+ Document</button>
+  </div>
+  <p class="aide" style="margin-top:8px">Une source décrit d'où vient l'information : registre paroissial, acte d'état civil, recensement, acte notarié, publication… On y joint un lien vers l'acte numérisé et sa cote d'archives.</p>
+  </div>
+  ${liste.length ? `<div class="carte"><table class="reg"><thead><tr><th>Source</th><th>Dépôt / cote</th><th>Citée</th><th></th></tr></thead><tbody>
+    ${liste.map(s=>`<tr>
+      <td><b>${esc(s.titre)}</b>${s.auteur?`<br><span class="aide">${esc(s.auteur)}</span>`:""}
+        ${s.lien?`<br><a href="${esc(s.lien)}" target="_blank" rel="noopener" class="mono" style="font-size:11.5px">${esc(s.lien.slice(0,46))}${s.lien.length>46?"…":""}</a>`:""}</td>
+      <td style="font-size:13px">${esc(s.depot)}${s.cote?`<br><span class="mono" style="font-size:11.5px">${esc(s.cote)}</span>`:""}</td>
+      <td class="mono">${usagesSource(s.id)}</td>
+      <td><button class="btn petit clair" onclick='ouvrirDlgSource("${esc(s.id)}")'>Modifier</button></td>
+    </tr>`).join("")}
+  </tbody></table></div>` : `<div class="carte vide"><div class="gros">Aucune source</div>
+    Les sources donnent leur valeur aux informations de l'arbre : sans elles, impossible de vérifier une filiation.</div>`}
+
+  ${M.medias.size ? `<div class="carte"><h2>Documents joints</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px">
+    ${[...M.medias.values()].map(m=>`<div style="border:1px solid var(--ligne);border-radius:8px;padding:8px;font-size:12px">
+      <div class="apercuMedia" data-media="${esc(m.id)}" style="height:90px;background:#F1EDE3;border-radius:5px;display:flex;align-items:center;justify-content:center;color:var(--encre-doux);overflow:hidden">…</div>
+      <div style="margin-top:5px"><b>${esc(m.titre)}</b></div>
+      <button class="btn petit clair" style="margin-top:4px" onclick='ouvrirDlgMedia("${esc(m.id)}",null)'>Modifier</button>
+    </div>`).join("")}
+    </div></div>` : ""}`;
+  $("#fsQ").addEventListener("input", e => { FS.q = e.target.value; vueSources(); });
+  chargerApercusMedias();
+}
+async function chargerApercusMedias(){
+  for(const el of $$(".apercuMedia")){
+    const m = M.medias.get(el.dataset.media); if(!m) continue;
+    if(m.local){
+      const d = await BD.mLire(m.local);
+      if(d && d.donnees.startsWith("data:image")) el.innerHTML = `<img src="${d.donnees}" style="max-width:100%;max-height:100%;object-fit:contain">`;
+      else el.textContent = "document";
+    } else if(/\.(jpe?g|png|gif|webp)$/i.test(m.fichier)) el.innerHTML = `<img src="${esc(m.fichier)}" style="max-width:100%;max-height:100%;object-fit:contain" loading="lazy">`;
+    else el.innerHTML = `<span style="font-size:11px;padding:4px;text-align:center">lien externe</span>`;
+  }
+}
+
+let ctxSource = null;
+function ouvrirDlgSource(sid){
+  ctxSource = sid;
+  const s = sid ? M.sources.get(sid) : null;
+  $("#dlgSourceTitre").textContent = s ? "Modifier la source" : "Nouvelle source";
+  $("#dlgSourceCorps").innerHTML = `
+    <label class="champ"><span>Titre</span><input id="sTitre" value="${esc(s?.titre==="(source sans titre)"?"":s?.titre||"")}" placeholder="Registre des baptêmes de Thury, 1737-1760"></label>
+    <div class="grille c2">
+      <label class="champ"><span>Auteur / rédacteur</span><input id="sAuteur" value="${esc(s?.auteur||"")}" placeholder="Paroisse Saint-Germain"></label>
+      <label class="champ"><span>Dépôt</span><input id="sDepot" value="${esc(s?.depot||"")}" placeholder="Archives départementales de l'Yonne"></label>
+    </div>
+    <div class="grille c2">
+      <label class="champ"><span>Cote</span><input id="sCote" value="${esc(s?.cote||"")}" placeholder="5 Mi 1234/3"></label>
+      <label class="champ"><span>Publication / édition</span><input id="sPubli" value="${esc(s?.publi||"")}"></label>
+    </div>
+    <label class="champ"><span>Lien vers l'acte numérisé</span><input id="sLien" value="${esc(s?.lien||"")}" placeholder="https://archives.yonne.fr/…" inputmode="url">
+      <div class="aide">Adresse de la vue en ligne aux archives, sur Geneanet, Filae…</div></label>
+    <label class="champ"><span>Note</span><textarea id="sNote" placeholder="Transcription, remarques de lecture…">${esc(s?.notes?.join("\\n")||"")}</textarea></label>
+    ${s?`<button class="btn petit clair" style="color:var(--greffe)" id="btnSupprSource">Supprimer cette source (${usagesSource(sid)} citation${usagesSource(sid)>1?"s":""})</button>`:""}`;
+  $("#btnSupprSource")?.addEventListener("click", () => {
+    modifier("suppression d'une source", () => {
+      const i = M.enregs.findIndex(r => r.xref === sid);
+      if(i>=0) M.enregs.splice(i,1);
+      for(const r of M.enregs){
+        for(let k=r.lignes.length-1;k>=0;k--){
+          if(r.lignes[k].tag==="SOUR" && r.lignes[k].val===sid){
+            let f=k+1; while(f<r.lignes.length && r.lignes[f].niv>r.lignes[k].niv) f++;
+            r.lignes.splice(k, f-k);
+          }
+        }
+      }
+    });
+    $("#dlgSource").close(); vueSources(); toast("Source supprimée");
+  });
+  $("#dlgSource").showModal();
+}
+function enregistrerSource(){
+  const d = {
+    titre:$("#sTitre").value.trim(), auteur:$("#sAuteur").value.trim(), depot:$("#sDepot").value.trim(),
+    cote:$("#sCote").value.trim(), publi:$("#sPubli").value.trim(), lien:$("#sLien").value.trim(),
+    note:$("#sNote").value.trim()
+  };
+  if(!d.titre){ toast("Donnez au moins un titre à la source"); return; }
+  modifier(ctxSource ? "modification d'une source" : "nouvelle source", () => {
+    if(ctxSource) majSourceRec(M.sources.get(ctxSource).rec, d);
+    else creerSource(d);
+  });
+  $("#dlgSource").close();
+  if($("#vue-sources").classList.contains("actif")) vueSources(); else vueFiche();
+  toast("Source enregistrée");
+}
+
+/* Citation : rattacher une source à une personne ou à un événement */
+let ctxCit = null;
+function ouvrirDlgCitation(pid, debutBloc){
+  ctxCit = { pid, debutBloc };
+  const src = [...M.sources.values()].sort((a,b)=>a.titre.localeCompare(b.titre,"fr"));
+  $("#dlgCitCorps").innerHTML = `
+    <label class="champ"><span>Source</span>
+      <select id="cSid">${src.map(s=>`<option value="${esc(s.id)}">${esc(s.titre)}</option>`).join("")}</select>
+      ${src.length?"":`<div class="aide" style="color:var(--greffe)">Aucune source enregistrée : créez-en une d'abord.</div>`}</label>
+    <label class="champ"><span>Page, vue ou cote précise</span><input id="cPage" placeholder="vue 12/48 — acte n°7"></label>
+    <label class="champ"><span>Fiabilité</span>
+      <select id="cQuay"><option value="">non précisée</option>
+        <option value="3">preuve directe (acte original)</option>
+        <option value="2">indice sérieux</option>
+        <option value="1">témoignage indirect</option>
+        <option value="0">douteux</option></select></label>
+    <label class="champ"><span>Note de citation</span><input id="cNote" placeholder="transcription partielle, doute sur le patronyme…"></label>
+    <p class="aide">Vous pouvez aussi <a class="lienPers" onclick="$('#dlgCit').close();ouvrirDlgSource(null)">créer une nouvelle source</a>.</p>`;
+  $("#dlgCit").showModal();
+}
+function enregistrerCitation(){
+  const sid = $("#cSid")?.value;
+  if(!sid){ toast("Créez d'abord une source"); return; }
+  const p = M.indis.get(ctxCit.pid);
+  const bloc = ctxCit.debutBloc==null ? null : blocs(p.rec).find(b=>b.debut===ctxCit.debutBloc);
+  modifier("ajout d'une citation", () =>
+    ajouterCitation(p.rec, bloc, sid, $("#cPage").value.trim(), $("#cQuay").value, $("#cNote").value.trim()));
+  $("#dlgCit").close(); vueFiche(); toast("Source citée");
+}
+
+/* Document : lien externe ou image locale */
+let ctxMedia = null;
+function ouvrirDlgMedia(mid, pid){
+  ctxMedia = { mid, pid };
+  const m = mid ? M.medias.get(mid) : null;
+  $("#dlgMediaTitre").textContent = m ? "Modifier le document" : "Ajouter un document";
+  $("#dlgMediaCorps").innerHTML = `
+    <label class="champ"><span>Titre</span><input id="mTitre" value="${esc(m?.titre||"")}" placeholder="Acte de naissance de Jean Cagnat"></label>
+    <label class="champ"><span>Lien vers le document</span><input id="mUrl" value="${esc(m && !m.local ? m.fichier : "")}" placeholder="https://…" inputmode="url">
+      <div class="aide">Adresse d'une image ou d'une vue d'archives en ligne.</div></label>
+    <p style="text-align:center;color:var(--encre-doux);font-size:12px;margin:8px 0">— ou —</p>
+    <label class="champ"><span>Image conservée dans l'application</span><input type="file" id="mFichier" accept="image/*">
+      <div class="aide">Photographie ou capture d'un acte. Elle reste sur cet appareil et est incluse dans la sauvegarde JSON.</div></label>
+    ${m?`<button class="btn petit clair" style="color:var(--greffe)" id="btnSupprMedia">Supprimer ce document</button>`:""}`;
+  $("#btnSupprMedia")?.addEventListener("click", async () => {
+    if(m.local) await BD.mSuppr(m.local);
+    modifier("suppression d'un document", () => {
+      const i = M.enregs.findIndex(r => r.xref === mid);
+      if(i>=0) M.enregs.splice(i,1);
+      for(const r of M.enregs)
+        for(let k=r.lignes.length-1;k>=0;k--)
+          if(r.lignes[k].tag==="OBJE" && r.lignes[k].val===mid) r.lignes.splice(k,1);
+    });
+    $("#dlgMedia").close();
+    if($("#vue-sources").classList.contains("actif")) vueSources(); else vueFiche();
+    toast("Document supprimé");
+  });
+  $("#dlgMedia").showModal();
+}
+async function enregistrerMedia(){
+  const titre = $("#mTitre").value.trim(), url = $("#mUrl").value.trim(), f = $("#mFichier").files[0];
+  if(!url && !f && !ctxMedia.mid){ toast("Indiquez un lien ou choisissez une image"); return; }
+  let mid = ctxMedia.mid;
+  if(f){
+    mid = await creerMediaFichier(f, titre);
+    M.reconstruire(); histoireEnregistrer("ajout d'un document"); marquerModifie();
+  } else if(mid){
+    modifier("modification d'un document", () => {
+      const rec = M.medias.get(mid).rec;
+      const bt = blocs(rec).find(b=>b.tag==="TITL"); if(bt) rec.lignes[bt.debut].val = titre;
+      const bf = blocs(rec).find(b=>b.tag==="FILE"); if(bf && url) rec.lignes[bf.debut].val = url;
+    });
+  } else {
+    modifier("ajout d'un document", () => { mid = creerMediaLien(titre, url); });
+  }
+  if(ctxMedia.pid && mid){
+    const p = M.indis.get(ctxMedia.pid);
+    modifier("document rattaché", () => attacherMedia(p.rec, null, mid));
+  }
+  $("#dlgMedia").close();
+  if($("#vue-sources").classList.contains("actif")) vueSources(); else vueFiche();
+  toast("Document enregistré");
+}
+
 /* ---------- Modales d'édition ---------- */
 let ctxPersonne = null; // id ou null (création)
 function ouvrirDlgPersonne(id){
@@ -903,6 +1446,7 @@ function ouvrirDlgPersonne(id){
   $("#dlgPersonne").showModal();
 }
 $("#btnEnrPersonne").addEventListener("click", () => {
+  histoireEnregistrer(ctxPersonne ? "modification d'état civil" : "création d'une personne");
   const givn = $("#fGivn").value.trim(), surn = $("#fSurn").value.trim().toUpperCase(), sexe = $("#fSexe").value;
   if(!givn && !surn){ toast("Renseignez au moins un prénom ou un nom."); return; }
   if(ctxPersonne){
@@ -940,6 +1484,7 @@ function ouvrirDlgEvt(pid, debut){
     <label class="champ"><span>Lieu</span><input id="eLieu" value="${esc(lieu)}" placeholder="Commune, Code, Département, Région, Pays"></label>
     ${b ? `<button class="btn petit clair" style="color:var(--greffe)" id="btnSupprEvt">Supprimer cet événement</button>` : ""}`;
   $("#btnSupprEvt")?.addEventListener("click", () => {
+    histoireEnregistrer("suppression d'un événement");
     supprimerBloc(p.rec, ctxEvt.b);
     M.reconstruire(); marquerModifie();
     $("#dlgEvt").close(); vueFiche(); toast("Événement supprimé");
@@ -947,6 +1492,7 @@ function ouvrirDlgEvt(pid, debut){
   $("#dlgEvt").showModal();
 }
 $("#btnEnrEvt").addEventListener("click", () => {
+  histoireEnregistrer("modification d'un événement");
   const p = M.indis.get(ctxEvt.pid);
   const tag = $("#eTag").value, val = $("#eVal").value.trim();
   const date = $("#eDate").value.trim().toUpperCase().replace(/\s+/g," ");
@@ -990,6 +1536,7 @@ function ouvrirDlgLien(type, pid, fid){
   $("#dlgLien").showModal();
 }
 $("#btnEnrLien").addEventListener("click", () => {
+  histoireEnregistrer("création d'un lien familial");
   let cible = $("#lId").value;
   if(!cible){
     const g = $("#lGivn").value.trim(), s = $("#lSurn").value.trim().toUpperCase();
@@ -1025,6 +1572,7 @@ function confirmerSupprPersonne(id){
   $("#dlgConfirmTitre").textContent = "Supprimer la personne";
   $("#dlgConfirmCorps").innerHTML = `<p>Supprimer <b>${esc(M.nom(id))}</b> du registre ? Les liens familiaux vers cette personne seront retirés. Cette action est définitive (pensez à exporter avant).</p>`;
   $("#btnConfirmOui").onclick = () => {
+    histoireEnregistrer("suppression de " + M.nom(id));
     const i = M.enregs.findIndex(r => r.xref === id);
     if(i >= 0) M.enregs.splice(i, 1);
     for(const r of M.enregs){
@@ -1200,8 +1748,1057 @@ function descHtml(id, vus, compte, prof){
   return html + "</li>";
 }
 
+/* =====================================================================
+   Éventail d'ascendance, liste de sosas, chemin de parenté
+   ===================================================================== */
+
+/* Numérotation Sosa-Stradonitz : 1 = personne de référence, 2n = père, 2n+1 = mère */
+function calculerSosas(racine, maxGen = 12){
+  const sosa = new Map();                 // numéro -> id
+  const parId = new Map();                // id -> [numéros] (une personne peut occuper plusieurs places)
+  const file = [[racine, 1, 1]];
+  while(file.length){
+    const [id, n, gen] = file.shift();
+    if(!id || gen > maxGen) continue;
+    sosa.set(n, id);
+    if(!parId.has(id)) parId.set(id, []);
+    parId.get(id).push(n);
+    const [pere, mere] = deuxParents(id);
+    if(pere) file.push([pere, n*2, gen+1]);
+    if(mere) file.push([mere, n*2+1, gen+1]);
+  }
+  return { sosa, parId };
+}
+const genDeSosa = n => Math.floor(Math.log2(n)) + 1;
+
+/* ---------- Éventail ---------- */
+const EVENT = { gen:6, racine:null, vb:null };
+function vueEventail(){
+  const el = $("#vue-eventail");
+  if(!M.indis.size){ el.innerHTML = `<div class="carte vide"><div class="gros">Registre vide</div>Importez un GEDCOM.</div>`; return; }
+  if(!EVENT.racine || !M.indis.has(EVENT.racine)) EVENT.racine = E.ficheId && M.indis.has(E.ficheId) ? E.ficheId : M.indis.keys().next().value;
+  el.innerHTML = `
+  <h1 class="titreVue">Éventail d'ascendance</h1>
+  <p class="sousTitre">Toutes les générations d'un seul coup d'œil. Appuyez sur un secteur pour recentrer, double-appui pour ouvrir la fiche.</p>
+  <div class="carte pasImpr"><div class="rang">
+    <span>Centre : <b>${esc(M.nom(EVENT.racine))}</b></span>
+    <label>Générations <select id="evGen" style="border:1px solid var(--ligne-forte);border-radius:6px;padding:5px;margin-left:6px">
+      ${[4,5,6,7,8,9].map(g=>`<option${g===EVENT.gen?" selected":""}>${g}</option>`).join("")}</select></label>
+    <button class="btn petit clair" id="evSvg">Télécharger le SVG</button>
+    <button class="btn petit clair" onclick="window.print()">Imprimer</button>
+  </div></div>
+  <div class="carte" style="padding:0;overflow:hidden;position:relative">
+    <svg id="svgEventail" style="width:100%;height:min(74vh,720px);display:block;background:var(--papier-2);touch-action:none"></svg>
+    <div class="zoomBtns pasImpr"><button id="evPlus">+</button><button id="evMoins">−</button></div>
+  </div>`;
+  $("#evGen").addEventListener("change", e => { EVENT.gen = +e.target.value; EVENT.vb = null; dessinerEventail(); });
+  $("#evSvg").addEventListener("click", () => {
+    const s = $("#svgEventail");
+    telecharger(new Blob(['<?xml version="1.0" encoding="UTF-8"?>\n' + s.outerHTML.replace("<svg ", '<svg xmlns="http://www.w3.org/2000/svg" ')], {type:"image/svg+xml"}),
+      `eventail-${nomFichier(M.nom(EVENT.racine))}.svg`);
+  });
+  dessinerEventail();
+  const g = activerGestes($("#svgEventail"), EVENT, { min: 80, max: 6000 });
+  $("#evPlus").addEventListener("click", () => g.zoomVers(0.5,0.5,1/1.5));
+  $("#evMoins").addEventListener("click", () => g.zoomVers(0.5,0.5,1.5));
+}
+function dessinerEventail(){
+  const G = EVENT.gen, { sosa } = calculerSosas(EVENT.racine, G);
+  const R0 = 62, dR = 74, R = R0 + (G-1)*dR;
+  const W = R*2 + 40, H = R + R0 + 40;
+  if(!EVENT.vb) EVENT.vb = [-R-20, -R-20, W, H];
+  const cx = 0, cy = 0;
+  const pol = (r,a) => [cx + r*Math.cos(a), cy + r*Math.sin(a)];
+  const teintes = ["#9E2B33","#8A5A2B","#4A6B52","#33506E","#6B4A6B","#7A6A2B","#2B6B6B","#8A3A5A","#4A4A7A"];
+  let html = "";
+  // centre
+  const rac = M.indis.get(EVENT.racine);
+  html += `<g class="sect" data-id="${esc(EVENT.racine)}" style="cursor:pointer">
+    <circle cx="0" cy="0" r="${R0-4}" fill="#F6F0E3" stroke="#9E2B33" stroke-width="1.5"/>
+    <text x="0" y="-6" text-anchor="middle" font-size="12" font-weight="600" fill="#22303F">${esc(tronc(rac.givn,14))}</text>
+    <text x="0" y="9" text-anchor="middle" font-size="11" fill="#9E2B33">${esc(tronc(rac.surn,14))}</text>
+    <text x="0" y="23" text-anchor="middle" font-size="9.5" fill="#4A5A6E" font-family="monospace">${rac.anNais??"?"}–${rac.anDec??""}</text></g>`;
+  for(let gen = 2; gen <= G; gen++){
+    const n0 = 2**(gen-1), n1 = 2**gen - 1;
+    const r1 = R0 + (gen-2)*dR, r2 = r1 + dR - 3;
+    const nb = n1 - n0 + 1, pas = Math.PI / nb;
+    for(let n = n0; n <= n1; n++){
+      const i = n - n0;
+      const a1 = Math.PI + i*pas, a2 = a1 + pas;
+      const id = sosa.get(n);
+      const [x1,y1] = pol(r1,a1), [x2,y2] = pol(r2,a1), [x3,y3] = pol(r2,a2), [x4,y4] = pol(r1,a2);
+      const grand = 0;
+      const d = `M${x1.toFixed(1)},${y1.toFixed(1)} L${x2.toFixed(1)},${y2.toFixed(1)} A${r2},${r2} 0 ${grand} 1 ${x3.toFixed(1)},${y3.toFixed(1)} L${x4.toFixed(1)},${y4.toFixed(1)} A${r1},${r1} 0 ${grand} 0 ${x1.toFixed(1)},${y1.toFixed(1)} Z`;
+      const col = teintes[(gen-2) % teintes.length];
+      if(!id){
+        html += `<path d="${d}" fill="#F3F0E8" stroke="#DAD4C6" stroke-width="0.8"/>`;
+        continue;
+      }
+      const p = M.indis.get(id);
+      const clair = n % 2 === 0 ? 0.13 : 0.07;                  // pères plus soutenus que mères
+      html += `<g class="sect" data-id="${esc(id)}" style="cursor:pointer">
+        <path d="${d}" fill="${col}" fill-opacity="${clair}" stroke="${col}" stroke-width="0.9"/>`;
+      // texte courbe le long du secteur
+      const am = (a1+a2)/2, rm = (r1+r2)/2;
+      const gauche = Math.cos(am) < 0;
+      if(gen <= 6){
+        const [tx,ty] = pol(rm, am);
+        const rot = (am*180/Math.PI) + (gauche ? 180 : 0);
+        const taille = gen<=3 ? 11 : gen<=4 ? 9.5 : gen<=5 ? 8 : 6.8;
+        html += `<text x="${tx.toFixed(1)}" y="${ty.toFixed(1)}" transform="rotate(${rot.toFixed(1)} ${tx.toFixed(1)} ${ty.toFixed(1)})"
+          text-anchor="middle" font-size="${taille}" fill="#22303F">
+          <tspan x="${tx.toFixed(1)}" dy="-2">${esc(tronc(p.givn, gen<=3?13:gen<=4?11:9))}</tspan>
+          <tspan x="${tx.toFixed(1)}" dy="${taille}" fill="${col}" font-weight="600">${esc(tronc(p.surn, gen<=3?13:gen<=4?11:9))}</tspan>
+          ${gen<=4?`<tspan x="${tx.toFixed(1)}" dy="${taille-1}" font-size="${taille-2}" fill="#4A5A6E">${p.anNais??"?"}–${p.anDec??""}</tspan>`:""}
+        </text>`;
+      } else {
+        const [tx,ty] = pol(rm, am);
+        const rot = (am*180/Math.PI) + (gauche ? 180 : 0);
+        html += `<text x="${tx.toFixed(1)}" y="${ty.toFixed(1)}" transform="rotate(${rot.toFixed(1)} ${tx.toFixed(1)} ${ty.toFixed(1)})"
+          text-anchor="middle" font-size="5.6" fill="#22303F">${esc(tronc(p.surn,10))}</text>`;
+      }
+      html += `</g>`;
+    }
+  }
+  const svg = $("#svgEventail");
+  svg.setAttribute("viewBox", EVENT.vb.join(" "));
+  svg.innerHTML = html;
+  $$("#svgEventail .sect").forEach(s => {
+    s.addEventListener("click", () => { EVENT.racine = s.dataset.id; EVENT.vb = null; vueEventail(); });
+    s.addEventListener("dblclick", ev => { ev.stopPropagation(); ouvrirFiche(s.dataset.id); });
+  });
+}
+
+/* ---------- Liste de sosas ---------- */
+function vueSosas(){
+  const el = $("#vue-sosas");
+  if(!M.indis.size){ el.innerHTML = `<div class="carte vide"><div class="gros">Registre vide</div>Importez un GEDCOM.</div>`; return; }
+  const racine = E.ficheId && M.indis.has(E.ficheId) ? E.ficheId : (EVENT.racine || M.indis.keys().next().value);
+  const { sosa, parId } = calculerSosas(racine, 14);
+  const nums = [...sosa.keys()].sort((a,b)=>a-b);
+  const parGen = new Map();
+  for(const n of nums){ const g = genDeSosa(n); if(!parGen.has(g)) parGen.set(g, []); parGen.get(g).push(n); }
+  // implexe : mêmes ancêtres occupant plusieurs places
+  const implexes = [...parId.entries()].filter(([id,l]) => l.length > 1);
+  el.innerHTML = `
+  <h1 class="titreVue">Liste de sosas</h1>
+  <p class="sousTitre">Ascendance numérotée de ${esc(M.nom(racine))} — ${nums.length} ancêtres sur ${parGen.size} générations. Numérotation Sosa-Stradonitz : le père porte le double du numéro de son enfant, la mère ce double plus un.</p>
+  <div class="carte pasImpr"><div class="rang">
+    <button class="btn petit clair" onclick="window.print()">Imprimer la liste</button>
+    <button class="btn petit clair" id="sosaTxt">Exporter en texte</button>
+    ${implexes.length?`<span class="badge warn">${implexes.length} implexe${implexes.length>1?"s":""}</span>`:""}
+  </div>
+  ${implexes.length?`<p class="aide" style="margin-top:8px">Un implexe signale un ancêtre qui occupe plusieurs places : les lignées se rejoignent, signe d'une union entre cousins.</p>`:""}</div>
+  ${[...parGen.entries()].map(([g,ns])=>`
+    <div class="carte"><h2>Génération ${g} <span class="badge">${ns.length} sur ${2**(g-1)}</span></h2>
+    <table class="reg"><tbody>
+    ${ns.map(n=>{ const p=M.indis.get(sosa.get(n)); const multi=parId.get(sosa.get(n)).length>1;
+      return `<tr class="clic" data-fiche="${esc(p.id)}">
+        <td class="mono" style="width:64px;color:var(--greffe);font-weight:600">${n}</td>
+        <td>${esc(p.givn)} <b>${esc(p.surn)}</b>${multi?` <span class="badge warn">implexe</span>`:""}</td>
+        <td class="mono" style="font-size:12px">${p.anNais??"?"}–${p.anDec??""}</td>
+        <td style="font-size:12.5px;color:var(--encre-doux)">${esc((p.evts.find(e=>e.tag==="BIRT")?.lieu||"").split(",")[0])}</td>
+      </tr>`;}).join("")}
+    </tbody></table></div>`).join("")}`;
+  $("#sosaTxt")?.addEventListener("click", () => {
+    const lignes = nums.map(n => { const p = M.indis.get(sosa.get(n));
+      return `${n}\t${p.givn} ${p.surn}\t${p.anNais??""}–${p.anDec??""}\t${(p.evts.find(e=>e.tag==="BIRT")?.lieu||"")}`; });
+    telecharger(new Blob([lignes.join("\n")], {type:"text/plain;charset=utf-8"}), `sosas-${nomFichier(M.nom(racine))}.txt`);
+  });
+}
+
+/* ---------- Chemin de parenté entre deux personnes ---------- */
+const PAR = { a:null, b:null };
+function vueParente(){
+  const el = $("#vue-parente");
+  if(!PAR.a && E.ficheId) PAR.a = E.ficheId;
+  el.innerHTML = `
+  <h1 class="titreVue">Lien de parenté</h1>
+  <p class="sousTitre">Comment deux personnes du registre sont-elles apparentées&nbsp;? Le chemin passe par leur ancêtre commun le plus proche.</p>
+  <div class="carte">
+    <div class="grille c2">
+      <label class="champ"><span>Première personne</span><input id="parA" placeholder="Chercher…" value="${PAR.a?esc(M.nom(PAR.a)):""}"><div id="resA"></div></label>
+      <label class="champ"><span>Seconde personne</span><input id="parB" placeholder="Chercher…" value="${PAR.b?esc(M.nom(PAR.b)):""}"><div id="resB"></div></label>
+    </div>
+    <button class="btn rouge" id="btnParente" ${PAR.a&&PAR.b?"":"disabled"}>Calculer le lien</button>
+  </div>
+  <div id="resParente"></div>`;
+  const brancher = (champ, res, cle) => {
+    $(champ).addEventListener("input", e => {
+      const q = norm(e.target.value);
+      if(q.length<2){ $(res).innerHTML=""; return; }
+      const l = [...M.indis.values()].filter(x=>norm(x.givn+" "+x.surn).includes(q)).slice(0,8);
+      $(res).innerHTML = l.map(x=>`<div style="padding:5px 8px;cursor:pointer;border-bottom:1px solid var(--ligne);font-size:13px" data-pick="${esc(x.id)}">${esc(x.givn)} <b>${esc(x.surn)}</b> <small class="mono">${x.anNais??"?"}</small></div>`).join("");
+      $$(`${res} [data-pick]`).forEach(d=>d.addEventListener("click",()=>{
+        PAR[cle]=d.dataset.pick; $(champ).value=M.nom(PAR[cle]); $(res).innerHTML="";
+        $("#btnParente").disabled = !(PAR.a&&PAR.b);
+      }));
+    });
+  };
+  brancher("#parA","#resA","a"); brancher("#parB","#resB","b");
+  $("#btnParente").addEventListener("click", afficherParente);
+  if(PAR.a && PAR.b) afficherParente();
+}
+function ascendantsAvecDistance(id, max=20){
+  const d = new Map([[id,0]]); const file=[[id,0]];
+  while(file.length){
+    const [x,n]=file.shift();
+    if(n>=max) continue;
+    for(const p of deuxParents(x)){
+      if(!p) continue;
+      if(!d.has(p) || d.get(p)>n+1){ d.set(p,n+1); file.push([p,n+1]); }
+    }
+  }
+  return d;
+}
+function afficherParente(){
+  const A=ascendantsAvecDistance(PAR.a), B=ascendantsAvecDistance(PAR.b);
+  let best=null;
+  for(const [id,da] of A) if(B.has(id)){ const s=da+B.get(id); if(!best||s<best.s) best={id,da,db:B.get(id),s}; }
+  const res=$("#resParente");
+  if(!best){
+    res.innerHTML=`<div class="carte vide"><div class="gros">Aucun lien trouvé</div>Ces deux personnes n'ont pas d'ancêtre commun dans le registre.</div>`;
+    return;
+  }
+  const lib = libelleParente(best.da, best.db, M.indis.get(PAR.a)?.sexe, M.indis.get(PAR.b)?.sexe);
+  const chemin = (dep, cible) => {                     // remonte de dep vers l'ancêtre commun
+    const suite=[dep]; let cur=dep;
+    while(cur!==cible){
+      const p = deuxParents(cur).find(x => x && ascendantsAvecDistance(x).has(cible));
+      if(!p) break; suite.push(p); cur=p;
+    }
+    return suite;
+  };
+  const cA=chemin(PAR.a,best.id), cB=chemin(PAR.b,best.id);
+  res.innerHTML=`
+  <div class="carte">
+    <h2>${esc(M.nom(PAR.b))} est ${lib} de ${esc(M.nom(PAR.a))}</h2>
+    <p style="font-size:13.5px;color:var(--encre-doux)">Ancêtre commun le plus proche : <b>${nomHtml(best.id)}</b> — à ${best.da} génération${best.da>1?"s":""} de la première personne, ${best.db} de la seconde.</p>
+    <div class="grille c2" style="margin-top:12px">
+      <div><h3 style="font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--encre-doux);margin-bottom:6px">Depuis ${esc(M.nom(PAR.a))}</h3>
+        <ul class="desc">${cA.map((x,i)=>`<li>${i?"↑ ":""}${nomHtml(x)}</li>`).join("")}</ul></div>
+      <div><h3 style="font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--encre-doux);margin-bottom:6px">Depuis ${esc(M.nom(PAR.b))}</h3>
+        <ul class="desc">${cB.map((x,i)=>`<li>${i?"↑ ":""}${nomHtml(x)}</li>`).join("")}</ul></div>
+    </div>
+  </div>`;
+}
+function libelleParente(da, db, sexeA, sexeB){
+  const f = sexeB==="F";
+  if(da===0) return f?"la même personne":"la même personne";
+  if(db===0){                                   // B est ancêtre de A
+    const n=["", f?"la mère":"le père", f?"la grand-mère":"le grand-père", f?"l'arrière-grand-mère":"l'arrière-grand-père"];
+    return n[da] || `l'ancêtre à la ${da}ᵉ génération`;
+  }
+  if(da===0){
+    const n=["", f?"la fille":"le fils", f?"la petite-fille":"le petit-fils", f?"l'arrière-petite-fille":"l'arrière-petit-fils"];
+    return n[db] || `le descendant à la ${db}ᵉ génération`;
+  }
+  if(da===1 && db===1) return f?"la sœur":"le frère";
+  if(da===1) return f?"la nièce":"le neveu";
+  if(db===1) return f?"la tante":"l'oncle";
+  const deg = Math.min(da,db)-1, ecart = Math.abs(da-db);
+  const base = deg===1 ? (f?"la cousine germaine":"le cousin germain")
+             : deg===2 ? (f?"la cousine issue de germain":"le cousin issu de germain")
+             : `${f?"la cousine":"le cousin"} au ${deg}ᵉ degré`;
+  return ecart ? `${base} à ${ecart} degré${ecart>1?"s":""} d'écart` : base;
+}
+
+/* =====================================================================
+   Frise chronologique et statistiques
+   ===================================================================== */
+
+/* Petits graphiques SVG réutilisables, sans dépendance */
+function barres(donnees, opts={}){
+  const {h=140, coul="#22303F", fmt=v=>v, sousTitres=true} = opts;
+  const max = Math.max(1, ...donnees.map(d=>d[1]));
+  const n = donnees.length || 1;
+  return `<div class="histo" style="height:${h}px">${donnees.map(([lab,v])=>`
+    <div class="col" title="${esc(lab)} : ${fmt(v)}">
+      <span class="val">${v?fmt(v):""}</span>
+      <div class="b" style="height:${Math.round(v/max*(h-34))}px;background:${coul}"></div>
+      ${sousTitres?`<span class="lab">${esc(lab)}</span>`:""}
+    </div>`).join("")}</div>`;
+}
+function listeTop(donnees, unite=""){
+  return `<ul class="listeTop">${donnees.map(([k,v])=>`<li><span>${esc(k)}</span><b>${v}${unite}</b></li>`).join("")}</ul>`;
+}
+
+/* ---------- Frise chronologique d'une personne ---------- */
+function vueFrise(){
+  const el = $("#vue-frise");
+  const p = E.ficheId && M.indis.get(E.ficheId);
+  if(!p){ el.innerHTML = `<div class="carte vide"><div class="gros">Choisissez une personne</div>Ouvrez une fiche, puis revenez sur cet onglet.</div>`; return; }
+  const evts = [];
+  const pousse = (an, quoi, qui, type) => { if(an) evts.push({an, quoi, qui, type}); };
+  for(const e of p.evts) pousse(annee(e.date), (LIB_EVT[e.tag]||e.tag) + (e.lieu?` — ${e.lieu.split(",")[0]}`:""), null, "soi");
+  for(const fid of p.fams){
+    const f = M.fams.get(fid); if(!f) continue;
+    const conj = f.mari===p.id ? f.femme : f.mari;
+    pousse(annee(f.mar), "Mariage" + (conj?` avec ${M.nom(conj)}`:""), conj, "union");
+    for(const c of f.enfants){ const e=M.indis.get(c); if(e) pousse(e.anNais, `Naissance de ${e.givn} ${e.surn}`, c, "enfant"); }
+  }
+  for(const par of deuxParents(p.id)){
+    const pp = M.indis.get(par); if(!pp) continue;
+    pousse(pp.anDec, `Décès de ${pp.sexe==="F"?"sa mère":"son père"} ${pp.givn} ${pp.surn}`, par, "parent");
+  }
+  const freres = new Set();
+  for(const fid of p.famc){ const f=M.fams.get(fid); if(f) f.enfants.forEach(x=>{ if(x!==p.id) freres.add(x); }); }
+  for(const fr of freres){ const s=M.indis.get(fr); if(s) pousse(s.anNais, `Naissance de ${s.givn} ${s.surn}`, fr, "fratrie"); }
+  evts.sort((a,b)=>a.an-b.an);
+
+  const n0 = p.anNais ?? (evts[0]?.an), nF = p.anDec ?? evts[evts.length-1]?.an;
+  const coul = { soi:"#9E2B33", union:"#8A5A2B", enfant:"#3E6B4F", fratrie:"#33506E", parent:"#6B4A6B" };
+  el.innerHTML = `
+  <h1 class="titreVue">Frise de vie</h1>
+  <p class="sousTitre">${esc(M.nom(p.id))}${n0?` — ${n0}${nF?` à ${nF}`:""}`:""}${n0&&nF?` · ${nF-n0} ans`:""}</p>
+  <div class="carte">
+    ${evts.length ? `<div style="position:relative;padding-left:76px">
+      <div style="position:absolute;left:56px;top:6px;bottom:6px;width:2px;background:var(--ligne-forte)"></div>
+      ${evts.map(e=>{
+        const age = n0 ? e.an - n0 : null;
+        return `<div style="position:relative;padding:7px 0">
+          <span class="mono" style="position:absolute;left:-76px;width:44px;text-align:right;font-size:12.5px;color:var(--encre)">${e.an}</span>
+          <span style="position:absolute;left:-26px;top:12px;width:11px;height:11px;border-radius:50%;background:${coul[e.type]};border:2px solid var(--papier-2)"></span>
+          <span style="font-size:13.5px">${e.qui?`<a class="lienPers" data-fiche="${esc(e.qui)}">${esc(e.quoi)}</a>`:esc(e.quoi)}</span>
+          ${age!=null && age>=0 ? `<span class="aide" style="margin-left:6px">à ${age} an${age>1?"s":""}</span>`:""}
+        </div>`;}).join("")}
+    </div>` : `<p class="aide">Aucun événement daté pour cette personne.</p>`}
+  </div>
+  <div class="carte"><h2>Contemporains</h2>
+    <p class="aide" style="margin-bottom:8px">Personnes du registre dont la vie recouvre celle de ${esc(p.givn)}.</p>
+    ${(() => {
+      if(!n0) return `<p class="aide">Date de naissance inconnue.</p>`;
+      const fin = nF ?? n0+85;
+      const c = [...M.indis.values()].filter(x => x.id!==p.id && x.anNais && (x.anDec??x.anNais+85) >= n0 && x.anNais <= fin)
+        .sort((a,b)=>a.anNais-b.anNais);
+      const larg = Math.max(1, (Math.max(...c.map(x=>x.anDec??x.anNais+85), fin) - Math.min(...c.map(x=>x.anNais), n0)));
+      const min = Math.min(...c.map(x=>x.anNais), n0);
+      return `<div style="font-size:12px">${c.slice(0,28).map(x=>{
+        const d=x.anNais, f=x.anDec??x.anNais+85;
+        return `<div style="display:grid;grid-template-columns:150px 1fr;gap:8px;align-items:center;padding:2px 0">
+          <a class="lienPers" data-fiche="${esc(x.id)}" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(x.givn)} ${esc(x.surn)}</a>
+          <div style="position:relative;height:11px;background:#F1EDE3;border-radius:3px">
+            <div style="position:absolute;left:${((d-min)/larg*100).toFixed(1)}%;width:${Math.max(1,((f-d)/larg*100)).toFixed(1)}%;top:0;bottom:0;background:${x.sexe==="F"?"#C08A90":"#7E93AE"};border-radius:3px"></div>
+          </div></div>`;}).join("")}
+        ${c.length>28?`<p class="aide">${c.length-28} autres non affichés.</p>`:""}</div>`;
+    })()}
+  </div>`;
+}
+
+/* ---------- Statistiques ---------- */
+function vueStats(){
+  const el = $("#vue-stats");
+  const ps = [...M.indis.values()];
+  if(!ps.length){ el.innerHTML = `<div class="carte vide"><div class="gros">Registre vide</div>Importez un GEDCOM.</div>`; return; }
+
+  // longévité par siècle de naissance
+  const parSiecle = new Map();
+  for(const p of ps){
+    if(!p.anNais || !p.anDec) continue;
+    const age = p.anDec - p.anNais;
+    if(age < 0 || age > 110) continue;
+    const s = Math.floor(p.anNais/100)*100;
+    if(!parSiecle.has(s)) parSiecle.set(s, []);
+    parSiecle.get(s).push(age);
+  }
+  const longevite = [...parSiecle.entries()].sort((a,b)=>a[0]-b[0])
+    .map(([s,l])=>[`${s/100+1}ᵉ`, Math.round(l.reduce((a,b)=>a+b,0)/l.length)]);
+
+  // mortalité infantile : part des décès avant 5 ans, par siècle
+  const infantile = [...parSiecle.entries()].sort((a,b)=>a[0]-b[0])
+    .map(([s,l])=>[`${s/100+1}ᵉ`, Math.round(l.filter(a=>a<5).length/l.length*100)]);
+
+  // âge au premier mariage
+  const agesMar = { H:[], F:[] };
+  for(const f of M.fams.values()){
+    const an = annee(f.mar); if(!an) continue;
+    for(const [id,sx] of [[f.mari,"H"],[f.femme,"F"]]){
+      const p = M.indis.get(id); if(!p?.anNais) continue;
+      const a = an - p.anNais;
+      if(a>=12 && a<=70) agesMar[sx].push(a);
+    }
+  }
+  const moy = l => l.length ? Math.round(l.reduce((a,b)=>a+b,0)/l.length*10)/10 : "—";
+
+  // enfants par couple
+  const nbEnf = [...M.fams.values()].map(f=>f.enfants.length).filter(n=>n>0);
+  const distEnf = [];
+  for(let i=1;i<=12;i++) distEnf.push([i===12?"12+":String(i), nbEnf.filter(n=>i===12?n>=12:n===i).length]);
+
+  // saisonnalité des naissances
+  const MOISN = ["janv","févr","mars","avr","mai","juin","juil","août","sept","oct","nov","déc"];
+  const parMois = new Array(12).fill(0);
+  for(const p of ps){
+    const m = /\b(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\b/.exec(p.nais||"");
+    if(m) parMois[["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"].indexOf(m[1])]++;
+  }
+  const totMois = parMois.reduce((a,b)=>a+b,0) || 1;
+
+  // prénoms
+  const prenoms = new Map();
+  for(const p of ps){ const g = p.givn.split(/[\s-]+/)[0]; if(g) prenoms.set(g,(prenoms.get(g)||0)+1); }
+  const topPrenomH = compter(ps.filter(p=>p.sexe==="M").map(p=>p.givn.split(/[\s-]+/)[0]).filter(Boolean)).slice(0,8);
+  const topPrenomF = compter(ps.filter(p=>p.sexe==="F").map(p=>p.givn.split(/[\s-]+/)[0]).filter(Boolean)).slice(0,8);
+
+  // professions
+  const metiers = compter(ps.flatMap(p=>p.evts.filter(e=>e.tag==="OCCU"&&e.val).map(e=>e.val.trim())).filter(Boolean)).slice(0,12);
+
+  // endogamie : distance entre lieux de naissance des époux
+  let dist = [], memeCommune = 0, couples = 0;
+  if(typeof LIEUX !== "undefined" && LIEUX.table.size){
+    for(const f of M.fams.values()){
+      const a = M.indis.get(f.mari), b = M.indis.get(f.femme);
+      if(!a||!b) continue;
+      const la = a.evts.find(e=>e.tag==="BIRT"&&e.lieu)?.lieu, lb = b.evts.find(e=>e.tag==="BIRT"&&e.lieu)?.lieu;
+      if(!la||!lb) continue;
+      couples++;
+      if(la===lb){ memeCommune++; dist.push(0); continue; }
+      const ca = LIEUX.table.get(la), cb = LIEUX.table.get(lb);
+      if(ca?.lat!=null && cb?.lat!=null) dist.push(distanceKm(ca,cb));
+    }
+  }
+  const distMoy = dist.length ? Math.round(dist.reduce((a,b)=>a+b,0)/dist.length) : null;
+
+  el.innerHTML = `
+  <h1 class="titreVue">Statistiques</h1>
+  <p class="sousTitre">Ce que le registre révèle de la famille, génération après génération.</p>
+
+  <div class="grille c4">
+    <div class="carte stat"><div class="n">${moy(agesMar.H)}</div><div class="l">âge au mariage · hommes</div></div>
+    <div class="carte stat"><div class="n">${moy(agesMar.F)}</div><div class="l">âge au mariage · femmes</div></div>
+    <div class="carte stat"><div class="n">${nbEnf.length?(nbEnf.reduce((a,b)=>a+b,0)/nbEnf.length).toFixed(1):"—"}</div><div class="l">enfants par couple</div></div>
+    <div class="carte stat"><div class="n">${distMoy!=null?distMoy+" km":"—"}</div><div class="l">distance entre époux</div></div>
+  </div>
+
+  <div class="carte"><h2>Longévité moyenne par siècle de naissance</h2>
+    ${barres(longevite, {coul:"#22303F", fmt:v=>v+" ans"})}
+    <p class="aide">Calculée sur les personnes dont naissance et décès sont connus.</p></div>
+
+  ${infantile.some(x=>x[1]>0)?`<div class="carte"><h2>Part des décès avant 5 ans</h2>
+    ${barres(infantile, {coul:"#9E2B33", fmt:v=>v+" %"})}
+    <p class="aide">Indicateur de la mortalité infantile telle qu'elle apparaît dans le registre — souvent sous-estimée, les enfants morts en bas âge étant moins bien documentés.</p></div>`:""}
+
+  <div class="grille c2">
+    <div class="carte"><h2>Enfants par couple</h2>${barres(distEnf,{coul:"#3E6B4F",h:120})}</div>
+    <div class="carte"><h2>Naissances par mois</h2>
+      ${barres(MOISN.map((m,i)=>[m, parMois[i]]),{coul:"#8A5A2B",h:120})}
+      <p class="aide">Les pics de fin d'hiver traduisent les conceptions du printemps, rythme classique des sociétés rurales.</p></div>
+  </div>
+
+  <div class="grille c3">
+    <div class="carte"><h2>Prénoms masculins</h2>${listeTop(topPrenomH)}</div>
+    <div class="carte"><h2>Prénoms féminins</h2>${listeTop(topPrenomF)}</div>
+    <div class="carte"><h2>Métiers</h2>${metiers.length?listeTop(metiers):`<p class="aide">Aucune profession renseignée.</p>`}</div>
+  </div>
+
+  ${couples?`<div class="carte"><h2>Endogamie</h2>
+    <p style="font-size:13.5px">Sur ${couples} couples dont les deux lieux de naissance sont connus,
+    <b>${memeCommune}</b> (${Math.round(memeCommune/couples*100)} %) sont nés dans la même commune.
+    ${distMoy!=null?`La distance moyenne séparant les lieux de naissance des époux est de <b>${distMoy} km</b>.`:""}</p>
+    <p class="aide">Ouvrez d'abord la carte pour que les lieux soient localisés, puis revenez ici pour une mesure complète.</p></div>`:""}
+
+  <div class="carte"><h2>Complétude du registre</h2>
+    ${(()=>{ const n=ps.length;
+      const c=[["Date de naissance",ps.filter(p=>p.nais).length],["Lieu de naissance",ps.filter(p=>p.evts.some(e=>e.tag==="BIRT"&&e.lieu)).length],
+              ["Date de décès",ps.filter(p=>p.dec).length],["Père ou mère connu",ps.filter(p=>deuxParents(p.id).some(Boolean)).length],
+              ["Profession",ps.filter(p=>p.evts.some(e=>e.tag==="OCCU")).length],["Au moins une source",ps.filter(p=>p.nbSources>0).length]];
+      return c.map(([lab,v])=>`<div style="margin:7px 0">
+        <div style="display:flex;justify-content:space-between;font-size:13px"><span>${lab}</span><b class="mono">${Math.round(v/n*100)} %</b></div>
+        <div style="height:7px;background:#F1EDE3;border-radius:4px;margin-top:3px"><div style="height:100%;width:${v/n*100}%;background:var(--greffe);border-radius:4px"></div></div>
+      </div>`).join(""); })()}
+  </div>`;
+}
+
+/* =====================================================================
+   Aide à la recherche, fusion de doublons, éditeur de lieux
+   ===================================================================== */
+
+/* ---------- Modèles de liens de recherche (configurables par l'utilisateur) ---------- */
+const MODELES_DEFAUT = [
+  { nom:"Recherche web", url:"https://duckduckgo.com/?q={prenom}+{nom}+{commune}+{annee}+généalogie" },
+  { nom:"Geneanet", url:"https://www.geneanet.org/fonds/individus/?go=1&nom={nom}&prenom={prenom}" }
+];
+function modeles(){ return (E.projet && E.projet.modeles) || MODELES_DEFAUT; }
+function lienModele(m, p){
+  const nais = p.evts.find(e=>e.tag==="BIRT");
+  const seg = (nais?.lieu||"").split(",").map(s=>s.trim());
+  const commune = seg.find(s=>s && !/^\d/.test(s)) || "";
+  const dep = (nais?.lieu||"").match(/\b(\d{2,3})\d{3}\b/)?.[1] || "";
+  return m.url
+    .replace(/{nom}/g, encodeURIComponent(p.surn))
+    .replace(/{prenom}/g, encodeURIComponent(p.givn.split(/\s+/)[0]||""))
+    .replace(/{commune}/g, encodeURIComponent(commune))
+    .replace(/{annee}/g, p.anNais||"")
+    .replace(/{departement}/g, dep);
+}
+
+/* ---------- Vue Recherche ---------- */
+function vueRecherche(){
+  const el = $("#vue-recherche");
+  if(!M.indis.size){ el.innerHTML = `<div class="carte vide"><div class="gros">Registre vide</div>Importez un GEDCOM.</div>`; return; }
+  const racine = E.ficheId && M.indis.has(E.ficheId) ? E.ficheId : M.indis.keys().next().value;
+  const { sosa, parId } = calculerSosas(racine, 16);
+
+  // front de recherche : ancêtres directs dont il manque au moins un parent
+  const front = [];
+  for(const [n,id] of sosa){
+    const p = M.indis.get(id); if(!p) continue;
+    const [pe,me] = deuxParents(id);
+    if(pe && me) continue;
+    front.push({ n, p, manque: !pe && !me ? "les deux parents" : (!pe ? "le père" : "la mère") });
+  }
+  front.sort((a,b)=>a.n-b.n);
+
+  // lacunes sur les ancêtres connus
+  const lacunes = [...sosa.entries()].map(([n,id])=>({n,p:M.indis.get(id)})).filter(x=>x.p)
+    .map(x=>{
+      const m=[];
+      if(!x.p.nais) m.push("date de naissance");
+      if(!x.p.evts.some(e=>e.tag==="BIRT"&&e.lieu)) m.push("lieu de naissance");
+      if(!x.p.dec) m.push("date de décès");
+      if(!x.p.nbSources) m.push("source");
+      return {...x, m};
+    }).filter(x=>x.m.length).sort((a,b)=>a.n-b.n);
+
+  const mods = modeles();
+  el.innerHTML = `
+  <h1 class="titreVue">Aide à la recherche</h1>
+  <p class="sousTitre">Où chercher ensuite pour faire avancer l'arbre de ${esc(M.nom(racine))}. Les ancêtres sont classés par numéro sosa : les plus petits numéros sont les plus proches de vous.</p>
+
+  <div class="carte pasImpr"><h2>Modèles de liens</h2>
+    <p class="aide" style="margin-bottom:8px">Les boutons de recherche utilisent ces adresses. Les mentions
+      <span class="mono">{nom} {prenom} {commune} {annee} {departement}</span> sont remplacées par les données de la personne.
+      Ajoutez ici l'adresse de recherche de vos archives départementales.</p>
+    <table class="reg"><tbody id="tblModeles">
+      ${mods.map((m,i)=>`<tr>
+        <td><input data-mn="${i}" value="${esc(m.nom)}" style="width:100%;border:1px solid var(--ligne-forte);border-radius:5px;padding:4px 6px;font-size:13px"></td>
+        <td><input data-mu="${i}" value="${esc(m.url)}" style="width:100%;border:1px solid var(--ligne-forte);border-radius:5px;padding:4px 6px;font-size:12px" class="mono"></td>
+        <td><button class="btn petit clair" data-msup="${i}">×</button></td></tr>`).join("")}
+    </tbody></table>
+    <div class="rang" style="margin-top:8px">
+      <button class="btn petit clair" id="mAjout">+ Ajouter un modèle</button>
+      <button class="btn petit" id="mEnr">Enregistrer les modèles</button>
+    </div>
+  </div>
+
+  <div class="carte"><h2>Front de recherche <span class="badge warn">${front.length}</span></h2>
+    <p class="aide" style="margin-bottom:8px">Ancêtres directs dont la filiation est incomplète : c'est là que l'arbre peut grandir.</p>
+    <table class="reg"><thead><tr><th>Sosa</th><th>Ancêtre</th><th>Manque</th><th>Naissance</th><th>Chercher</th></tr></thead><tbody>
+    ${front.slice(0,120).map(f=>`<tr>
+      <td class="mono" style="color:var(--greffe);font-weight:600">${f.n}</td>
+      <td><a class="lienPers" data-fiche="${esc(f.p.id)}">${esc(f.p.givn)} <b>${esc(f.p.surn)}</b></a></td>
+      <td><span class="badge ${f.manque==="les deux parents"?"warn":""}">${f.manque}</span></td>
+      <td style="font-size:12.5px">${esc(dateFr(f.p.nais))||"—"}<br><span class="aide">${esc((f.p.evts.find(e=>e.tag==="BIRT")?.lieu||"").split(",")[0])}</span></td>
+      <td style="white-space:nowrap">${mods.map((m,i)=>`<a class="btn petit clair" href="${esc(lienModele(m,f.p))}" target="_blank" rel="noopener">${esc(m.nom)}</a>`).join(" ")}</td>
+    </tr>`).join("")}
+    </tbody></table>
+    ${front.length>120?`<p class="aide">${front.length-120} autres non affichés.</p>`:""}
+  </div>
+
+  <div class="carte"><h2>Ancêtres à compléter <span class="badge">${lacunes.length}</span></h2>
+    <table class="reg"><thead><tr><th>Sosa</th><th>Ancêtre</th><th>Informations manquantes</th></tr></thead><tbody>
+    ${lacunes.slice(0,80).map(x=>`<tr class="clic" data-fiche="${esc(x.p.id)}">
+      <td class="mono">${x.n}</td>
+      <td>${esc(x.p.givn)} <b>${esc(x.p.surn)}</b></td>
+      <td style="font-size:12.5px">${x.m.map(v=>`<span class="badge">${v}</span>`).join(" ")}</td></tr>`).join("")}
+    </tbody></table>
+  </div>`;
+
+  $("#mAjout").addEventListener("click", () => {
+    E.projet.modeles = [...modeles(), { nom:"Nouveau", url:"https://" }];
+    marquerModifie(); vueRecherche();
+  });
+  $("#mEnr").addEventListener("click", () => {
+    const l = modeles().map((m,i)=>({
+      nom: $(`[data-mn="${i}"]`).value.trim() || "Lien",
+      url: $(`[data-mu="${i}"]`).value.trim()
+    })).filter(m=>m.url && m.url!=="https://");
+    E.projet.modeles = l; marquerModifie(); vueRecherche(); toast("Modèles enregistrés");
+  });
+  $$("[data-msup]").forEach(b => b.addEventListener("click", () => {
+    const l = modeles().slice(); l.splice(+b.dataset.msup,1);
+    E.projet.modeles = l; marquerModifie(); vueRecherche();
+  }));
+}
+
+/* ---------- Fusion de doublons ---------- */
+const FUS = { a:null, b:null };
+function vueDoublons(){
+  const el = $("#vue-doublons");
+  const paires = controlerQualite().filter(a=>a.type==="doublon");
+  el.innerHTML = `
+  <h1 class="titreVue">Doublons</h1>
+  <p class="sousTitre">${paires.length} rapprochement${paires.length>1?"s":""} possible${paires.length>1?"s":""} — même patronyme, même premier prénom, naissances à deux ans près.</p>
+  <div class="carte">
+    <table class="reg"><thead><tr><th>Personne</th><th>Doublon possible</th><th></th></tr></thead><tbody>
+    ${paires.slice(0,150).map(d=>{
+      const a=M.indis.get(d.id), b=M.indis.get(d.id2);
+      if(!a||!b) return "";
+      return `<tr>
+        <td><a class="lienPers" data-fiche="${esc(a.id)}">${esc(a.givn)} <b>${esc(a.surn)}</b></a> <span class="mono" style="font-size:12px">${a.anNais??"?"}</span></td>
+        <td><a class="lienPers" data-fiche="${esc(b.id)}">${esc(b.givn)} <b>${esc(b.surn)}</b></a> <span class="mono" style="font-size:12px">${b.anNais??"?"}</span></td>
+        <td><button class="btn petit rouge" onclick='ouvrirFusion("${esc(a.id)}","${esc(b.id)}")'>Comparer</button></td></tr>`;
+    }).join("")}
+    </tbody></table>
+    ${paires.length?"":`<p class="aide">Aucun doublon repéré.</p>`}
+  </div>
+  <div class="carte pasImpr"><h2>Comparer deux personnes au choix</h2>
+    <div class="grille c2">
+      <label class="champ"><span>Première</span><input id="fusA" placeholder="Chercher…"><div id="fresA"></div></label>
+      <label class="champ"><span>Seconde</span><input id="fusB" placeholder="Chercher…"><div id="fresB"></div></label>
+    </div>
+    <button class="btn clair" id="btnFusManuel" disabled>Comparer</button>
+  </div>`;
+  const brancher=(c,r,k)=>{ $(c).addEventListener("input",e=>{
+    const q=norm(e.target.value); if(q.length<2){$(r).innerHTML="";return;}
+    const l=[...M.indis.values()].filter(x=>norm(x.givn+" "+x.surn).includes(q)).slice(0,8);
+    $(r).innerHTML=l.map(x=>`<div style="padding:5px 8px;cursor:pointer;border-bottom:1px solid var(--ligne);font-size:13px" data-p="${esc(x.id)}">${esc(x.givn)} <b>${esc(x.surn)}</b> <small class="mono">${x.anNais??"?"}</small></div>`).join("");
+    $$(`${r} [data-p]`).forEach(d=>d.addEventListener("click",()=>{FUS[k]=d.dataset.p;$(c).value=M.nom(FUS[k]);$(r).innerHTML="";
+      $("#btnFusManuel").disabled=!(FUS.a&&FUS.b);}));
+  });};
+  brancher("#fusA","#fresA","a"); brancher("#fusB","#fresB","b");
+  $("#btnFusManuel").addEventListener("click",()=>ouvrirFusion(FUS.a,FUS.b));
+}
+function ouvrirFusion(ida, idb){
+  const a=M.indis.get(ida), b=M.indis.get(idb);
+  if(!a||!b) return;
+  const champ=(lib,va,vb)=>{
+    const diff = (va||"")!==(vb||"");
+    return `<tr><td style="font-size:12px;color:var(--encre-doux)">${lib}</td>
+      <td><label style="font-size:13px;display:block"><input type="radio" name="f_${lib.replace(/\W/g,"")}" value="a" checked> ${esc(va)||"—"}</label></td>
+      <td><label style="font-size:13px;display:block"><input type="radio" name="f_${lib.replace(/\W/g,"")}" value="b" ${diff?"":"disabled"}> ${esc(vb)||"—"}</label></td></tr>`;
+  };
+  const lieuDe=(p,tag)=>p.evts.find(e=>e.tag===tag&&e.lieu)?.lieu||"";
+  $("#dlgFusionCorps").innerHTML=`
+    <p class="aide" style="margin-bottom:10px">La seconde fiche sera supprimée : ses événements, sources et liens familiaux
+      seront reportés sur la première. Choisissez la valeur à conserver pour chaque champ.</p>
+    <table class="reg"><thead><tr><th></th><th>Fiche conservée</th><th>Fiche absorbée</th></tr></thead><tbody>
+      ${champ("Prénoms",a.givn,b.givn)}
+      ${champ("Nom",a.surn,b.surn)}
+      ${champ("Sexe",a.sexe,b.sexe)}
+      ${champ("Naissance",dateFr(a.nais),dateFr(b.nais))}
+      ${champ("Lieu de naissance",lieuDe(a,"BIRT"),lieuDe(b,"BIRT"))}
+      ${champ("Décès",dateFr(a.dec),dateFr(b.dec))}
+    </tbody></table>
+    <p style="font-size:13px;margin-top:10px">
+      <b>${esc(M.nom(ida))}</b> : ${a.evts.length} événement${a.evts.length>1?"s":""}, ${a.fams.length} union${a.fams.length>1?"s":""}, ${a.nbSources} source${a.nbSources>1?"s":""}<br>
+      <b>${esc(M.nom(idb))}</b> : ${b.evts.length} événement${b.evts.length>1?"s":""}, ${b.fams.length} union${b.fams.length>1?"s":""}, ${b.nbSources} source${b.nbSources>1?"s":""}</p>`;
+  $("#btnFusionner").onclick=()=>{
+    const pris = lib => document.querySelector(`input[name="f_${lib.replace(/\W/g,"")}"]:checked`)?.value || "a";
+    modifier("fusion de deux fiches", () => fusionner(ida, idb, {
+      givn: pris("Prénoms")==="b" ? b.givn : a.givn,
+      surn: pris("Nom")==="b" ? b.surn : a.surn,
+      sexe: pris("Sexe")==="b" ? b.sexe : a.sexe
+    }));
+    $("#dlgFusion").close();
+    E.ficheId = ida;
+    toast("Fiches fusionnées");
+    afficherVue("fiche");
+  };
+  $("#dlgFusion").showModal();
+}
+/* Reporte tout ce que porte B sur A, puis supprime B */
+function fusionner(ida, idb, choix){
+  const A = M.indis.get(ida).rec, B = M.indis.get(idb).rec;
+  poserNom(A, choix.givn, choix.surn);
+  if(choix.sexe && choix.sexe!=="U") poserLigne1(A, "SEX", choix.sexe);
+  // événements, sources, notes et documents de B que A n'a pas déjà
+  const signature = l => l.tag + "|" + l.val;
+  const dejaA = new Set(A.lignes.filter(l=>l.niv===1).map(signature));
+  for(const bl of blocs(B)){
+    if(["NAME","SEX","FAMC","FAMS"].includes(bl.tag)) continue;
+    const sig = bl.tag + "|" + bl.val;
+    const dateB = sousVal(B, bl.debut, bl.fin, "DATE");
+    const dupli = blocs(A).some(x => x.tag===bl.tag && sousVal(A,x.debut,x.fin,"DATE")===dateB && dateB);
+    if(dupli && bl.tag!=="SOUR" && bl.tag!=="OBJE" && bl.tag!=="NOTE") continue;
+    if(dejaA.has(sig) && (bl.tag==="SOUR"||bl.tag==="OBJE")) continue;
+    A.lignes.push(...B.lignes.slice(bl.debut, bl.fin).map(l=>({...l})));
+  }
+  // liens familiaux : toute référence à B pointe désormais vers A
+  for(const r of M.enregs){
+    if(r.tag!=="FAM") continue;
+    for(const l of r.lignes) if(["HUSB","WIFE","CHIL"].includes(l.tag) && l.val===idb) l.val=ida;
+  }
+  const famsA = new Set(A.lignes.filter(l=>["FAMC","FAMS"].includes(l.tag)).map(l=>l.tag+l.val));
+  for(const l of B.lignes)
+    if(["FAMC","FAMS"].includes(l.tag) && !famsA.has(l.tag+l.val)) A.lignes.push({...l});
+  // doublons de CHIL/HUSB/WIFE créés par le report
+  for(const r of M.enregs){
+    if(r.tag!=="FAM") continue;
+    const vus=new Set();
+    r.lignes = r.lignes.filter(l => {
+      if(!["HUSB","WIFE","CHIL"].includes(l.tag)) return true;
+      const k=l.tag+l.val; if(vus.has(k)) return false; vus.add(k); return true;
+    });
+  }
+  const i = M.enregs.findIndex(r=>r.xref===idb);
+  if(i>=0) M.enregs.splice(i,1);
+}
+
+/* ---------- Éditeur de lieux ---------- */
+const LIEUX_ED = { q:"" };
+function tousLesLieux(){
+  const m = new Map();
+  const ajoute = (plac, ref) => { if(!plac) return; if(!m.has(plac)) m.set(plac,{plac,n:0,refs:[]}); const e=m.get(plac); e.n++; if(e.refs.length<40) e.refs.push(ref); };
+  for(const p of M.indis.values()) for(const e of p.evts) if(e.lieu) ajoute(e.lieu, p.id);
+  for(const f of M.fams.values()) if(f.marLieu) ajoute(f.marLieu, f.id);
+  return m;
+}
+function vueLieux(){
+  const el = $("#vue-lieux");
+  const table = tousLesLieux();
+  const q = norm(LIEUX_ED.q);
+  let liste = [...table.values()];
+  if(q) liste = liste.filter(x=>norm(x.plac).includes(q));
+  liste.sort((a,b)=>b.n-a.n);
+  const man = (E.projet && E.projet.lieux) || {};
+  el.innerHTML = `
+  <h1 class="titreVue">Lieux</h1>
+  <p class="sousTitre">${table.size} lieux distincts dans le registre. Renommez, fusionnez ou positionnez-les — la correction s'applique partout d'un coup.</p>
+  <div class="carte pasImpr"><div class="rang">
+    <input id="lqQ" placeholder="Filtrer les lieux…" value="${esc(LIEUX_ED.q)}" style="flex:1;min-width:160px;border:1px solid var(--ligne-forte);border-radius:6px;padding:7px 9px">
+    <button class="btn clair" id="lqNorm">Uniformiser la casse</button>
+  </div>
+  <p class="aide" style="margin-top:8px">Format conseillé : <span class="mono">Lieu-dit, Commune, Code, Département, Région, Pays</span> — c'est celui que reconnaît le géocodage de la carte.</p></div>
+  <div class="carte"><table class="reg"><thead><tr><th>Lieu</th><th>Usages</th><th>Position</th><th></th></tr></thead><tbody>
+  ${liste.slice(0,300).map(x=>`<tr>
+    <td style="font-size:13px">${esc(x.plac)}</td>
+    <td class="mono">${x.n}</td>
+    <td style="font-size:12px">${man[x.plac] ? `<span class="badge ok">saisie</span>` : `<span class="aide">auto</span>`}</td>
+    <td style="white-space:nowrap">
+      <button class="btn petit clair" onclick='ouvrirDlgLieu(${JSON.stringify(x.plac).replace(/'/g,"&#39;")})'>Modifier</button>
+    </td></tr>`).join("")}
+  </tbody></table>
+  ${liste.length>300?`<p class="aide">${liste.length-300} autres — affinez le filtre.</p>`:""}</div>`;
+  $("#lqQ").addEventListener("input", e => { LIEUX_ED.q = e.target.value; vueLieux(); });
+  $("#lqNorm").addEventListener("click", () => {
+    modifier("uniformisation des lieux", () => {
+      for(const r of M.enregs) for(const l of r.lignes) if(l.tag==="PLAC")
+        l.val = l.val.split(",").map(s=>s.trim()).filter(Boolean).join(", ");
+    });
+    vueLieux(); toast("Lieux uniformisés");
+  });
+}
+let ctxLieu = null;
+function ouvrirDlgLieu(plac){
+  ctxLieu = plac;
+  const man = (E.projet && E.projet.lieux) || {};
+  const co = man[plac] || (typeof LIEUX!=="undefined" && LIEUX.table.get(plac)) || {};
+  const autres = [...tousLesLieux().keys()].filter(x=>x!==plac).sort();
+  $("#dlgLieuCorps").innerHTML = `
+    <label class="champ"><span>Libellé du lieu</span><input id="lNom" value="${esc(plac)}">
+      <div class="aide">Modifier ce libellé le remplace dans tous les événements qui l'utilisent.</div></label>
+    <div class="grille c2">
+      <label class="champ"><span>Latitude</span><input id="lLat" value="${co.lat??""}" inputmode="decimal"></label>
+      <label class="champ"><span>Longitude</span><input id="lLon" value="${co.lon??""}" inputmode="decimal"></label>
+    </div>
+    <label class="champ"><span>Fusionner avec un autre lieu</span>
+      <select id="lFus"><option value="">— ne pas fusionner —</option>
+        ${autres.slice(0,400).map(a=>`<option value="${esc(a)}">${esc(a)}</option>`).join("")}</select>
+      <div class="aide">Tous les événements de ce lieu basculeront sur le lieu choisi.</div></label>`;
+  $("#dlgLieu").showModal();
+}
+function enregistrerLieu(){
+  const nouveau = $("#lNom").value.trim();
+  const fus = $("#lFus").value;
+  const la = parseFloat($("#lLat").value.replace(",",".")), lo = parseFloat($("#lLon").value.replace(",","."));
+  const cible = fus || nouveau;
+  if(!cible){ toast("Le libellé ne peut pas être vide"); return; }
+  modifier("modification d'un lieu", () => {
+    if(cible !== ctxLieu){
+      for(const r of M.enregs) for(const l of r.lignes)
+        if(l.tag==="PLAC" && l.val===ctxLieu) l.val = cible;
+    }
+    if(!isNaN(la) && !isNaN(lo)){
+      if(!E.projet.lieux) E.projet.lieux = {};
+      E.projet.lieux[cible] = { lat:la, lon:lo };
+      if(ctxLieu!==cible) delete E.projet.lieux[ctxLieu];
+    }
+  });
+  CARTE.version = -1;
+  $("#dlgLieu").close(); vueLieux(); toast(fus ? "Lieux fusionnés" : "Lieu mis à jour");
+}
+
+/* =====================================================================
+   Saisie d'actes en série — dépouillement de registres
+   Le contexte (source, commune, année) est conservé d'un acte à l'autre :
+   on ne ressaisit que ce qui change réellement.
+   ===================================================================== */
+const SAISIE = { type:"naissance", source:"", lieu:"", annee:"", page:"", compte:0, dernier:null };
+
+/* Champ « personne » : soit une personne existante du registre, soit une nouvelle à créer */
+function champPersonne(cle, libelle, sexeDefaut){
+  return `<fieldset style="border:1px solid var(--ligne);border-radius:8px;padding:10px;margin-bottom:10px">
+    <legend style="font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--encre-doux);padding:0 6px">${libelle}</legend>
+    <div class="rang" style="margin-bottom:6px">
+      <input id="sp_${cle}_q" placeholder="Rechercher une personne déjà enregistrée…" style="flex:1;min-width:150px;border:1px solid var(--ligne-forte);border-radius:6px;padding:6px 8px;font-size:13px">
+      <span id="sp_${cle}_sel" class="badge" style="display:none"></span>
+      <button type="button" class="btn petit clair" id="sp_${cle}_x" style="display:none">Détacher</button>
+    </div>
+    <div id="sp_${cle}_res" style="max-height:130px;overflow:auto"></div>
+    <div id="sp_${cle}_neuf" class="grille c3" style="gap:8px">
+      <label class="champ" style="margin:0"><span>Prénoms</span><input id="sp_${cle}_g"></label>
+      <label class="champ" style="margin:0"><span>Nom</span><input id="sp_${cle}_s"></label>
+      <label class="champ" style="margin:0"><span>Sexe</span><select id="sp_${cle}_x2">
+        <option value="U"${sexeDefaut==="U"?" selected":""}>?</option>
+        <option value="M"${sexeDefaut==="M"?" selected":""}>H</option>
+        <option value="F"${sexeDefaut==="F"?" selected":""}>F</option></select></label>
+    </div>
+    <input type="hidden" id="sp_${cle}_id">
+  </fieldset>`;
+}
+function brancherChampPersonne(cle){
+  const q=$(`#sp_${cle}_q`), res=$(`#sp_${cle}_res`), sel=$(`#sp_${cle}_sel`), x=$(`#sp_${cle}_x`), neuf=$(`#sp_${cle}_neuf`), id=$(`#sp_${cle}_id`);
+  q.addEventListener("input", () => {
+    const s = norm(q.value);
+    if(s.length<2){ res.innerHTML=""; return; }
+    const l=[...M.indis.values()].filter(p=>norm(p.givn+" "+p.surn).includes(s)).slice(0,8);
+    res.innerHTML = l.map(p=>`<div style="padding:5px 8px;cursor:pointer;border-bottom:1px solid var(--ligne);font-size:13px" data-p="${esc(p.id)}">
+      ${esc(p.givn)} <b>${esc(p.surn)}</b> <small class="mono">${p.anNais??"?"}–${p.anDec??""}</small></div>`).join("")
+      || `<div class="aide" style="padding:5px 8px">Aucun résultat — remplissez les champs ci-dessous pour créer la personne.</div>`;
+    $$(`#sp_${cle}_res [data-p]`).forEach(d=>d.addEventListener("click",()=>{
+      id.value=d.dataset.p; sel.textContent=M.nom(d.dataset.p); sel.style.display="";
+      x.style.display=""; neuf.style.display="none"; res.innerHTML=""; q.value="";
+    }));
+  });
+  x.addEventListener("click",()=>{ id.value=""; sel.style.display="none"; x.style.display="none"; neuf.style.display=""; });
+}
+function lireChampPersonne(cle){
+  const id=$(`#sp_${cle}_id`).value;
+  if(id) return { id };
+  const g=$(`#sp_${cle}_g`).value.trim(), s=$(`#sp_${cle}_s`).value.trim().toUpperCase();
+  if(!g && !s) return null;
+  return { givn:g, surn:s, sexe:$(`#sp_${cle}_x2`).value };
+}
+function resoudrePersonne(d){
+  if(!d) return null;
+  if(d.id) return d.id;
+  return creerPersonne(d.givn, d.surn, d.sexe);
+}
+
+function vueSaisie(){
+  const el = $("#vue-saisie");
+  const src = [...M.sources.values()].sort((a,b)=>a.titre.localeCompare(b.titre,"fr"));
+  el.innerHTML = `
+  <h1 class="titreVue">Saisie d'actes</h1>
+  <p class="sousTitre">Dépouillement de registre : le contexte reste d'un acte au suivant, seules les données propres à l'acte sont à saisir.</p>
+
+  <div class="carte pasImpr" style="background:#FBF9F4">
+    <h2>Contexte du registre</h2>
+    <div class="grille c2">
+      <label class="champ"><span>Source citée</span>
+        <select id="saSource">
+          <option value="">— aucune —</option>
+          ${src.map(s=>`<option value="${esc(s.id)}"${SAISIE.source===s.id?" selected":""}>${esc(s.titre)}</option>`).join("")}
+        </select>
+        <div class="aide"><a class="lienPers" onclick="ouvrirDlgSource(null)">Créer une source</a> pour ce registre.</div></label>
+      <label class="champ"><span>Commune (reprise dans chaque acte)</span>
+        <input id="saLieu" value="${esc(SAISIE.lieu)}" placeholder="Thury, 89520, Yonne, Bourgogne-Franche-Comté, France"></label>
+    </div>
+    <div class="grille c3">
+      <label class="champ"><span>Année par défaut</span><input id="saAnnee" value="${esc(SAISIE.annee)}" inputmode="numeric" placeholder="1743"></label>
+      <label class="champ"><span>Vue / page</span><input id="saPage" value="${esc(SAISIE.page)}" placeholder="vue 12/48"></label>
+      <label class="champ"><span>Type d'acte</span><select id="saType">
+        <option value="naissance"${SAISIE.type==="naissance"?" selected":""}>Naissance / baptême</option>
+        <option value="mariage"${SAISIE.type==="mariage"?" selected":""}>Mariage</option>
+        <option value="deces"${SAISIE.type==="deces"?" selected":""}>Décès / sépulture</option>
+      </select></label>
+    </div>
+    ${SAISIE.compte?`<p class="aide">${SAISIE.compte} acte${SAISIE.compte>1?"s":""} saisi${SAISIE.compte>1?"s":""} dans cette session.
+      ${SAISIE.dernier?`Dernier : <a class="lienPers" data-fiche="${esc(SAISIE.dernier)}">${esc(M.nom(SAISIE.dernier))}</a>`:""}</p>`:""}
+  </div>
+
+  <div class="carte"><div id="saForm"></div></div>`;
+
+  const majCtx = () => {
+    SAISIE.source=$("#saSource").value; SAISIE.lieu=$("#saLieu").value.trim();
+    SAISIE.annee=$("#saAnnee").value.trim(); SAISIE.page=$("#saPage").value.trim();
+  };
+  ["saSource","saLieu","saAnnee","saPage"].forEach(i=>$("#"+i).addEventListener("change",majCtx));
+  $("#saType").addEventListener("change", e => { majCtx(); SAISIE.type=e.target.value; formulaireActe(); });
+  formulaireActe();
+}
+function formulaireActe(){
+  const f = $("#saForm");
+  const dateDef = SAISIE.annee ? ` value="${esc(SAISIE.annee)}"` : "";
+  if(SAISIE.type==="naissance"){
+    f.innerHTML = `
+      <h2>Acte de naissance ou de baptême</h2>
+      <div class="grille c2">
+        <label class="champ"><span>Date de l'acte</span><input id="acDate"${dateDef} placeholder="12 MAR 1743 ou 1743"></label>
+        <label class="champ"><span>Lieu (vide = commune du registre)</span><input id="acLieu" placeholder="${esc(SAISIE.lieu)}"></label>
+      </div>
+      ${champPersonne("enf","Enfant","U")}
+      ${champPersonne("pere","Père","M")}
+      ${champPersonne("mere","Mère","F")}
+      <div class="grille c2">
+        <label class="champ"><span>Profession du père</span><input id="acMetier"></label>
+        <label class="champ"><span>Baptême plutôt que naissance</span><select id="acBapt"><option value="BIRT">naissance</option><option value="CHR">baptême</option></select></label>
+      </div>
+      <label class="champ"><span>Note de l'acte (parrain, marraine, mentions…)</span><textarea id="acNote"></textarea></label>
+      <div class="rang"><button class="btn rouge" id="acEnr">Enregistrer et saisir le suivant</button></div>`;
+    ["enf","pere","mere"].forEach(brancherChampPersonne);
+    $("#acEnr").addEventListener("click", enregistrerNaissance);
+  } else if(SAISIE.type==="mariage"){
+    f.innerHTML = `
+      <h2>Acte de mariage</h2>
+      <div class="grille c2">
+        <label class="champ"><span>Date de l'acte</span><input id="acDate"${dateDef}></label>
+        <label class="champ"><span>Lieu (vide = commune du registre)</span><input id="acLieu" placeholder="${esc(SAISIE.lieu)}"></label>
+      </div>
+      ${champPersonne("epx","Époux","M")}
+      ${champPersonne("pepx","Père de l'époux","M")}
+      ${champPersonne("mepx","Mère de l'époux","F")}
+      ${champPersonne("epse","Épouse","F")}
+      ${champPersonne("pepse","Père de l'épouse","M")}
+      ${champPersonne("mepse","Mère de l'épouse","F")}
+      <label class="champ"><span>Note de l'acte (témoins, âges, professions…)</span><textarea id="acNote"></textarea></label>
+      <div class="rang"><button class="btn rouge" id="acEnr">Enregistrer et saisir le suivant</button></div>`;
+    ["epx","pepx","mepx","epse","pepse","mepse"].forEach(brancherChampPersonne);
+    $("#acEnr").addEventListener("click", enregistrerMariage);
+  } else {
+    f.innerHTML = `
+      <h2>Acte de décès ou de sépulture</h2>
+      <div class="grille c2">
+        <label class="champ"><span>Date de l'acte</span><input id="acDate"${dateDef}></label>
+        <label class="champ"><span>Lieu (vide = commune du registre)</span><input id="acLieu" placeholder="${esc(SAISIE.lieu)}"></label>
+      </div>
+      ${champPersonne("def","Défunt","U")}
+      <div class="grille c3">
+        <label class="champ"><span>Âge au décès</span><input id="acAge" inputmode="numeric" placeholder="72"></label>
+        <label class="champ"><span>Profession</span><input id="acMetier"></label>
+        <label class="champ"><span>Sépulture plutôt que décès</span><select id="acBapt"><option value="DEAT">décès</option><option value="BURI">sépulture</option></select></label>
+      </div>
+      ${champPersonne("conj","Conjoint mentionné","U")}
+      <label class="champ"><span>Note de l'acte</span><textarea id="acNote"></textarea></label>
+      <div class="rang"><button class="btn rouge" id="acEnr">Enregistrer et saisir le suivant</button></div>`;
+    ["def","conj"].forEach(brancherChampPersonne);
+    $("#acEnr").addEventListener("click", enregistrerDeces);
+  }
+}
+function ctxLieuActe(){ return ($("#acLieu")?.value.trim()) || SAISIE.lieu; }
+function citerActe(rec, bloc){
+  if(!SAISIE.source) return;
+  ajouterCitation(rec, bloc, SAISIE.source, SAISIE.page, "3", "");
+}
+function finActe(id){
+  SAISIE.compte++; SAISIE.dernier = id;
+  toast("Acte enregistré");
+  vueSaisie();
+}
+function enregistrerNaissance(){
+  const enf = lireChampPersonne("enf");
+  if(!enf){ toast("Renseignez au moins le nom de l'enfant"); return; }
+  const date = $("#acDate").value.trim().toUpperCase(), lieu = ctxLieuActe();
+  const tag = $("#acBapt").value, note = $("#acNote").value.trim(), metier = $("#acMetier").value.trim();
+  const dPere = lireChampPersonne("pere"), dMere = lireChampPersonne("mere");
+  let idEnf;
+  modifier("saisie d'un acte de naissance", () => {
+    idEnf = resoudrePersonne(enf);
+    const rec = M.indis.get(idEnf).rec;
+    poserEvt(rec, null, tag, date, lieu, "");
+    M.reconstruire();
+    const bl = blocs(M.indis.get(idEnf).rec).find(b=>b.tag===tag);
+    citerActe(M.indis.get(idEnf).rec, bl);
+    if(note) M.indis.get(idEnf).rec.lignes.push({niv:1, tag:"NOTE", val:note});
+    const idPere = resoudrePersonne(dPere), idMere = resoudrePersonne(dMere);
+    if(idPere || idMere){
+      M.reconstruire();
+      let fid = null;
+      for(const f of M.fams.values())
+        if((idPere ? f.mari===idPere : !f.mari) && (idMere ? f.femme===idMere : !f.femme)) { fid = f.id; break; }
+      if(!fid) fid = creerFamille(idPere||"", idMere||"");
+      M.reconstruire();
+      if(!M.fams.get(fid).enfants.includes(idEnf)) ajouterEnfant(fid, idEnf);
+      if(metier && idPere){
+        M.reconstruire();
+        poserEvt(M.indis.get(idPere).rec, null, "OCCU", "", "", metier);
+      }
+    }
+  });
+  finActe(idEnf);
+}
+function enregistrerMariage(){
+  const epx = lireChampPersonne("epx"), epse = lireChampPersonne("epse");
+  if(!epx || !epse){ toast("Renseignez les deux époux"); return; }
+  const date = $("#acDate").value.trim().toUpperCase(), lieu = ctxLieuActe(), note = $("#acNote").value.trim();
+  const dPepx=lireChampPersonne("pepx"), dMepx=lireChampPersonne("mepx");
+  const dPepse=lireChampPersonne("pepse"), dMepse=lireChampPersonne("mepse");
+  let idH;
+  modifier("saisie d'un acte de mariage", () => {
+    idH = resoudrePersonne(epx); const idF = resoudrePersonne(epse);
+    M.reconstruire();
+    let fid = [...M.fams.values()].find(f=>f.mari===idH && f.femme===idF)?.id || creerFamille(idH, idF);
+    M.reconstruire();
+    const rec = M.fams.get(fid).rec;
+    if(!blocs(rec).some(b=>b.tag==="MARR")){
+      rec.lignes.push({niv:1, tag:"MARR", val:""});
+      if(date) rec.lignes.push({niv:2, tag:"DATE", val:date});
+      if(lieu) rec.lignes.push({niv:2, tag:"PLAC", val:lieu});
+    }
+    M.reconstruire();
+    const bl = blocs(rec).find(b=>b.tag==="MARR");
+    citerActe(rec, bl);
+    if(note) rec.lignes.push({niv:1, tag:"NOTE", val:note});
+    // filiations mentionnées dans l'acte
+    const lier = (idEnfant, dp, dm) => {
+      const ip = resoudrePersonne(dp), im = resoudrePersonne(dm);
+      if(!ip && !im) return;
+      M.reconstruire();
+      let f = [...M.fams.values()].find(x=>(ip?x.mari===ip:!x.mari) && (im?x.femme===im:!x.femme))?.id
+              || creerFamille(ip||"", im||"");
+      M.reconstruire();
+      if(!M.fams.get(f).enfants.includes(idEnfant)) ajouterEnfant(f, idEnfant);
+    };
+    lier(idH, dPepx, dMepx);
+    lier(idF, dPepse, dMepse);
+  });
+  finActe(idH);
+}
+function enregistrerDeces(){
+  const def = lireChampPersonne("def");
+  if(!def){ toast("Renseignez le défunt"); return; }
+  const date = $("#acDate").value.trim().toUpperCase(), lieu = ctxLieuActe();
+  const tag = $("#acBapt").value, note = $("#acNote").value.trim();
+  const age = $("#acAge").value.trim(), metier = $("#acMetier").value.trim();
+  const dConj = lireChampPersonne("conj");
+  let idDef;
+  modifier("saisie d'un acte de décès", () => {
+    idDef = resoudrePersonne(def);
+    const rec = M.indis.get(idDef).rec;
+    poserEvt(rec, null, tag, date, lieu, "");
+    if(metier) poserEvt(rec, null, "OCCU", "", "", metier);
+    M.reconstruire();
+    const bl = blocs(M.indis.get(idDef).rec).find(b=>b.tag===tag);
+    citerActe(M.indis.get(idDef).rec, bl);
+    const sx = M.indis.get(idDef)?.sexe;
+    const n = [note, age?`${sx==="F"?"Âgée":"Âgé"} de ${age} ans à son décès.`:""].filter(Boolean).join(" ");
+    if(n) M.indis.get(idDef).rec.lignes.push({niv:1, tag:"NOTE", val:n});
+    // âge indiqué -> naissance estimée si elle manque
+    const p = M.indis.get(idDef);
+    const anDeces = annee(date);
+    if(age && anDeces && !p.nais)
+      poserEvt(p.rec, null, "BIRT", "ABT " + (anDeces - parseInt(age,10)), "", "");
+    const idConj = resoudrePersonne(dConj);
+    if(idConj){
+      M.reconstruire();
+      const a = M.indis.get(idDef), b = M.indis.get(idConj);
+      const dejaUnis = a.fams.some(f => M.fams.get(f) && (M.fams.get(f).mari===idConj || M.fams.get(f).femme===idConj));
+      if(!dejaUnis) creerFamille(a.sexe==="F"?idConj:idDef, a.sexe==="F"?idDef:idConj);
+    }
+  });
+  finActe(idDef);
+}
+
 /* ---------- Contrôle qualité ---------- */
+let _qualiteCache = null;
 function controlerQualite(){
+  if(_qualiteCache && _qualiteCache.v === M.version) return _qualiteCache.a;
+  const a = calculerQualite();
+  _qualiteCache = { v: M.version, a };
+  return a;
+}
+function calculerQualite(){
   const anomalies = [];
   const push = (id, type, libelle) => anomalies.push({ id, type, libelle });
   for(const p of M.indis.values()){
@@ -1420,6 +3017,7 @@ function importerGed(texte, nom){
     return;
   }
   M.enregs = enregs; M.reconstruire();
+  histoireInit();
   E.ficheId = null; E.racineArbre = null; E.racineDesc = null;
   if(E.projet && nom && /^(Mon arbre|Nouvel arbre)$/.test(E.projet.nom)){
     E.projet.nom = nom.replace(/\.(ged|gedcom|txt)$/i, "") || E.projet.nom;
@@ -1450,6 +3048,8 @@ async function chargerProjet(id){
   M.enregs = parseGedcom(p.gedcom); M.reconstruire();
   E.ficheId = null; E.racineArbre = null; E.racineDesc = null;
   localStorage.setItem("koseki-dernier-projet", id);
+  histoireInit();
+  histoireInit();
   await majSelecteurProjets();
   $("#etatSauvegarde").textContent = "Chargé";
   afficherVue("tableau");
@@ -1484,6 +3084,20 @@ document.addEventListener("click", e => {
 $$("nav.onglets button").forEach(b => b.addEventListener("click", () => afficherVue(b.dataset.vue)));
 $$("dialog [data-fermer]").forEach(b => b.addEventListener("click", () => b.closest("dialog").close()));
 $("#selProjet").addEventListener("change", e => chargerProjet(e.target.value));
+$("#btnAnnuler").addEventListener("click", () => histoireAller(-1));
+$("#btnRefaire").addEventListener("click", () => histoireAller(1));
+document.addEventListener("keydown", e => {
+  if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z"){
+    e.preventDefault(); histoireAller(e.shiftKey ? 1 : -1);
+  }
+});
+$("#btnAnnuler").addEventListener("click", () => histoireAller(-1));
+$("#btnRefaire").addEventListener("click", () => histoireAller(1));
+document.addEventListener("keydown", e => {          // raccourcis clavier
+  if(!(e.ctrlKey||e.metaKey) || e.target.matches("input,textarea")) return;
+  if(e.key==="z" && !e.shiftKey){ e.preventDefault(); histoireAller(-1); }
+  else if(e.key==="y" || (e.key==="z" && e.shiftKey)){ e.preventDefault(); histoireAller(1); }
+});
 $("#btnNouvProjet").addEventListener("click", async () => {
   const nom = prompt("Nom du nouveau projet :", "Nouvel arbre");
   if(nom) await creerProjet(nom.trim());
@@ -37524,6 +39138,14 @@ function coordDe(plac){
 }
 
 /* Mouvements : filiation (naissance parent -> naissance enfant) et vie (naissance -> décès) */
+/* La courbe d'un mouvement ne dépend que de ses deux extrémités : on la calcule
+   une fois pour toutes plutôt qu'à chaque image de l'animation. */
+function prepMv(m){
+  const [x1,y1]=projeter(m.a.lat,m.a.lon), [x2,y2]=projeter(m.b.lat,m.b.lon);
+  const cx=(x1+x2)/2-(y2-y1)*0.16, cy=(y1+y2)/2+(x2-x1)*0.16;
+  m.d=`M${x1.toFixed(1)},${y1.toFixed(1)}Q${cx.toFixed(1)},${cy.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}`;
+  return m;
+}
 function calculerMouvements(){
   const mv=[];
   const lieuNais = p => p.evts.find(e=>e.tag==="BIRT" && e.lieu)?.lieu || p.evts.find(e=>e.tag==="CHR" && e.lieu)?.lieu;
@@ -37540,7 +39162,7 @@ function calculerMouvements(){
     const [vn, vf] = vie(p);
     if(ln && ld && ln!==ld){
       const a=coordDe(ln), b=coordDe(ld);
-      if(a&&b) mv.push({type:"vie", de:ln, vers:ld, a, b, an:p.anNais||p.anDec, qui:p.id, vn, vf});
+      if(a&&b) mv.push(prepMv({type:"vie", de:ln, vers:ld, a, b, an:p.anNais||p.anDec, qui:p.id, vn, vf}));
     }
     if(ln){
       for(const par of deuxParents(p.id)){
@@ -37548,7 +39170,7 @@ function calculerMouvements(){
         const pp=M.indis.get(par); if(!pp) continue;
         const lp=lieuNais(pp); if(!lp || lp===ln) continue;
         const a=coordDe(lp), b=coordDe(ln);
-        if(a&&b) mv.push({type:"filiation", de:lp, vers:ln, a, b, an:p.anNais||pp.anNais, qui:p.id, vn, vf});
+        if(a&&b) mv.push(prepMv({type:"filiation", de:lp, vers:ln, a, b, an:p.anNais||pp.anNais, qui:p.id, vn, vf}));
       }
     }
   }
@@ -37571,9 +39193,9 @@ function projeter(lat,lon){
 }
 
 /* État de la vue carte */
-const CARTE={ vb:null, mv:[], pts:[], anMin:1500, anMax:2030, an:2030, jouer:false, timer:null,
-              filtre:{vie:true, filiation:true}, mode:"cumul", sel:null,
-              prec:{commune:true,departement:true,region:true,pays:true} };
+const CARTE={ vb:null, mv:[], evts:null, vies:[], etiq:[], version:-1,
+              anMin:1500, anMax:2030, an:2030, jouer:false, timer:null,
+              filtre:{vie:true, filiation:true}, mode:"cumul", sel:null };
 
 /* ---------- Vue Carte ---------- */
 function vueCarte(){
@@ -37588,16 +39210,22 @@ function vueCarte(){
   setTimeout(()=>{ construireCarte(el); }, 30);
 }
 function construireCarte(el){
-  indexerLieux();
-  CARTE.mv=calculerMouvements();
-  CARTE.evts=[];                                  // liste à plat, pour un filtrage temporel rapide
-  for(const p of M.indis.values())
-    for(const e of p.evts) if(e.lieu) CARTE.evts.push({lieu:e.lieu, an:annee(e.date)});
-  CARTE.vies=[];                                  // fenêtres de vie, pour le compteur de contemporains
-  for(const p of M.indis.values()){
-    const n = p.anNais ?? (p.anDec ? p.anDec-60 : null);
-    if(n==null) continue;
-    CARTE.vies.push([n, p.anDec ?? n+85]);
+  if(CARTE.version !== M.version){      // géocodage et mouvements : inutile de tout refaire à chaque visite
+    indexerLieux();
+    CARTE.mv=calculerMouvements();
+    CARTE.version=M.version;
+    CARTE.evts=null;
+  }
+  if(!CARTE.evts){
+    CARTE.evts=[];                                // liste à plat, pour un filtrage temporel rapide
+    for(const p of M.indis.values())
+      for(const e of p.evts) if(e.lieu) CARTE.evts.push({lieu:e.lieu, an:annee(e.date)});
+    CARTE.vies=[];                                // fenêtres de vie, pour le compteur de contemporains
+    for(const p of M.indis.values()){
+      const n = p.anNais ?? (p.anDec ? p.anDec-60 : null);
+      if(n==null) continue;
+      CARTE.vies.push([n, p.anDec ?? n+85]);
+    }
   }
   const lieux=[...LIEUX.table.values()];
   const loc=lieux.filter(l=>l.lat!=null);
@@ -37761,16 +39389,12 @@ function dessinerCarte(quoi){
     }
     const groupes=new Map();          // couleur|épaisseur|opacité -> tracés réunis
     for(const m of agg.values()){
-      const [x1,y1]=projeter(m.a.lat,m.a.lon), [x2,y2]=projeter(m.b.lat,m.b.lon);
-      const dx=x2-x1, dy=y2-y1;
-      const cx=(x1+x2)/2 - dy*0.16, cy=(y1+y2)/2 + dx*0.16;
       const recent = CARTE.jouer && (CARTE.an-m.an)<=18;
       const col = recent ? "#D4A017" : (m.type==="filiation" ? "#9E2B33" : "#33506E");
       const op  = recent ? 1 : Math.round(Math.min(0.85, 0.34+m.n*0.07)*10)/10;
       const w   = Math.round((recent ? 2.6 : 1) * Math.min(3.6, 1.05+m.n*0.26) * 4)/4;
       const cle = col+"|"+w+"|"+op;
-      const d   = `M${x1.toFixed(1)},${y1.toFixed(1)}Q${cx.toFixed(1)},${cy.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}`;
-      const g=groupes.get(cle); if(g) g.d+=d; else groupes.set(cle,{col,w,op,d});
+      const g=groupes.get(cle); if(g) g.d+=m.d; else groupes.set(cle,{col,w,op,d:m.d});
     }
     let arcs="";
     for(const g of groupes.values())
@@ -37806,8 +39430,9 @@ function dessinerCarte(quoi){
     CARTE.etiq=[]; let selD=null;
     for(const [plac,n] of cpt){
       const L=coordDe(plac); if(!L) continue;
-      const [x,y]=projeter(L.lat,L.lon);
-      const seg="M"+x.toFixed(2)+","+y.toFixed(2)+"L"+x.toFixed(2)+","+y.toFixed(2);
+      if(L.px===undefined){ const q=projeter(L.lat,L.lon); L.px=q[0]; L.py=q[1];
+        L.seg="M"+q[0].toFixed(2)+","+q[1].toFixed(2)+"L"+q[0].toFixed(2)+","+q[1].toFixed(2); }
+      const x=L.px, y=L.py, seg=L.seg;
       const D=Math.round((4.5+Math.sqrt(n/maxN)*9.5)*fPt*2)/2; // diamètre écran, par pas de 0,5 px
       CARTE.etiq.push({plac, x, y, n, D});
       if(CARTE.sel===plac){ selD={seg, D}; continue; }
