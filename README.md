@@ -10,16 +10,6 @@ migrations de votre lignée — tout reste sur votre appareil, et tout ressort e
 
 ## Démarrage
 
-Ouvrez `index.html` dans un navigateur, ou déployez sur GitHub Pages :
-
-1. Poussez les fichiers dans un dépôt. **Le fichier de l'application doit s'appeler `index.html`** :
-   sans lui, GitHub Pages affiche le README à la place du site.
-2. Settings → Pages → Source : *Deploy from a branch* → branche `main`, dossier `/ (root)`
-3. L'application est en ligne à `https://<utilisateur>.github.io/koseki/`
-
-> `github.com/<utilisateur>/koseki` est la page **du code** — elle affiche toujours le README.
-> `<utilisateur>.github.io/koseki/` est l'**application**.
-
 ## Les vues
 
 | Vue | Ce qu'elle apporte |
